@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Farmer_Project.Models.Entity
+namespace Farmer_Project.Entities
 {
     public class MemberInformation
     {

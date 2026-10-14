@@ -1,5 +1,5 @@
 ﻿using Farmer_Project.Helpers;
-using Farmer_Project.Models.Entity;
+using Farmer_Project.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 

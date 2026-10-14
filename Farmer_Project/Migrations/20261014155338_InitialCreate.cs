@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Farmer_Project.Migrations
 {
     /// <inheritdoc />
-    public partial class initCreated : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,22 @@ namespace Farmer_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MemberInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Sort = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NickName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Account = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Passwd = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MemberInformations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FarmersArticles",
                 columns: table => new
                 {
@@ -42,7 +58,7 @@ namespace Farmer_Project.Migrations
                     ArticleType = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     ArticleTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ArticleImagePath = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ArticleSummary = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ArticleSummary = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsPublished = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -53,7 +69,8 @@ namespace Farmer_Project.Migrations
                         name: "FK_FarmersArticles_FarmersInfo_FarmersId",
                         column: x => x.FarmersId,
                         principalTable: "FarmersInfo",
-                        principalColumn: "FarmersId");
+                        principalColumn: "FarmersId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,7 +81,7 @@ namespace Farmer_Project.Migrations
                     DetailId = table.Column<int>(type: "int", nullable: false),
                     SubTitle = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     SubImagePath = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    SubContent = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                    SubContent = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,6 +117,9 @@ namespace Farmer_Project.Migrations
         {
             migrationBuilder.DropTable(
                 name: "FarmersArticlesDetails");
+
+            migrationBuilder.DropTable(
+                name: "MemberInformations");
 
             migrationBuilder.DropTable(
                 name: "FarmersArticles");

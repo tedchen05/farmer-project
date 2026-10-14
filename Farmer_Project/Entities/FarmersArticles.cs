@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Farmer_Project.Models.Entity
+namespace Farmer_Project.Entities
 {
     public class FarmersArticles
     {

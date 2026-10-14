@@ -16,12 +16,12 @@ namespace Farmer_Project.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "8.0.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersArticles", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersArticles", b =>
                 {
                     b.Property<int>("ArticlesId")
                         .ValueGeneratedOnAdd()
@@ -64,7 +64,7 @@ namespace Farmer_Project.Migrations
                     b.ToTable("FarmersArticles");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersArticlesDetails", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersArticlesDetails", b =>
                 {
                     b.Property<int>("ArticlesId")
                         .HasColumnType("int");
@@ -91,7 +91,7 @@ namespace Farmer_Project.Migrations
                     b.ToTable("FarmersArticlesDetails");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersInfo", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersInfo", b =>
                 {
                     b.Property<int>("FarmersId")
                         .ValueGeneratedOnAdd()
@@ -153,7 +153,7 @@ namespace Farmer_Project.Migrations
                     b.ToTable("FarmersInfo");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.MemberInformation", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.MemberInformation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,9 +186,9 @@ namespace Farmer_Project.Migrations
                     b.ToTable("MemberInformations");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersArticles", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersArticles", b =>
                 {
-                    b.HasOne("Farmer_Project.Models.Entity.FarmersInfo", "FarmersInfo")
+                    b.HasOne("Farmer_Project.Entities.FarmersInfo", "FarmersInfo")
                         .WithMany("FarmersArticles")
                         .HasForeignKey("FarmersId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -196,9 +196,9 @@ namespace Farmer_Project.Migrations
                     b.Navigation("FarmersInfo");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersArticlesDetails", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersArticlesDetails", b =>
                 {
-                    b.HasOne("Farmer_Project.Models.Entity.FarmersArticles", "FarmersArticles")
+                    b.HasOne("Farmer_Project.Entities.FarmersArticles", "FarmersArticles")
                         .WithMany("FarmersArticlesDetails")
                         .HasForeignKey("ArticlesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -207,12 +207,12 @@ namespace Farmer_Project.Migrations
                     b.Navigation("FarmersArticles");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersArticles", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersArticles", b =>
                 {
                     b.Navigation("FarmersArticlesDetails");
                 });
 
-            modelBuilder.Entity("Farmer_Project.Models.Entity.FarmersInfo", b =>
+            modelBuilder.Entity("Farmer_Project.Entities.FarmersInfo", b =>
                 {
                     b.Navigation("FarmersArticles");
                 });

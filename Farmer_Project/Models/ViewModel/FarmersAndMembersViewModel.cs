@@ -1,4 +1,4 @@
-﻿namespace Farmer_Project.Models.Entity
+﻿namespace Farmer_Project.Entities
 {
     public class FarmersAndMembersViewModel
     {

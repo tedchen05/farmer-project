@@ -1,4 +1,4 @@
-﻿using Farmer_Project.Models.Entity;
+﻿using Farmer_Project.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;

@@ -1,7 +1,8 @@
 ﻿using Farmer_Project.Helpers;
 using Farmer_Project.Models;
+using Farmer_Project.Models.Login;
 using Farmer_Project.Models.ViewModel;
-using Farmer_Project.Services;
+using Farmer_Project.Services.Login;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
@@ -10,13 +11,13 @@ namespace Farmer_Project.Controllers
     {
         private readonly EmailHelper _emailHelper;
         private readonly AppDbContext _DbContext;
-        private readonly IMemberService _memberService;
+        private readonly ILoginService _loginService;
 
-        public HomeController(AppDbContext DbContext, IMemberService memberService, EmailHelper emailHelper)
+        public HomeController(AppDbContext DbContext, ILoginService loginService, EmailHelper emailHelper)
         {
             _emailHelper = emailHelper;
             _DbContext = DbContext;
-            _memberService = memberService;
+            _loginService = loginService;
         }
 
         public IActionResult index()
@@ -76,23 +77,23 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginModel member)
+        public IActionResult Login(LoginInput member)
         {
             ViewData["BodyClass"] = "sub_page";
 
             // 驗證表單是否完整
-            if (string.IsNullOrEmpty(member.account) || string.IsNullOrEmpty(member.passwd))
+            if (string.IsNullOrEmpty(member.Account) || string.IsNullOrEmpty(member.Passwd))
             {
                 TempData["dele"] = true;
                 ViewBag.Message = "請填寫所有欄位。";
                 return View();
             }
-            Response.Cookies.Append("UserAccount", member.account, new CookieOptions { Expires = DateTimeOffset.Now.AddHours(1) });
+            Response.Cookies.Append("UserAccount", member.Account, new CookieOptions { Expires = DateTimeOffset.Now.AddHours(1) });
 
-            var result = _memberService.Login(member.account, member.passwd); // 帳號驗證
+            var result = _loginService.Login(member.Account, member.Passwd); // 帳號驗證
 
             // 檢查帳號格式
-            if (!member.account.Contains(".com"))
+            if (!member.Account.Contains(".com"))
             {
                 ViewBag.Msg2 = "帳號格式輸入錯誤";
                 return View();
@@ -113,7 +114,7 @@ namespace Farmer_Project.Controllers
             }
 
             HttpContext.Session.SetString("IsLoggedIn", "true");
-            HttpContext.Session.SetString("UserName", member.account);
+            HttpContext.Session.SetString("UserName", member.Account);
             if (result.Role == MemberRole.Member)
             {
                 HttpContext.Session.SetString("UserRole", "Member"); // 記錄用戶角色

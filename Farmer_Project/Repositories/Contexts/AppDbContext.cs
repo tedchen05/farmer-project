@@ -1,4 +1,4 @@
-﻿using Farmer_Project.Models.Entity;
+﻿using Farmer_Project.Entities;
 using Farmer_Project.Models.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
