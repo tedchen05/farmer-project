@@ -1,6 +1,9 @@
 using Farmer_Project.Helpers;
 using Farmer_Project.Repositories.Login;
+using Farmer_Project.Repositories.Member;
 using Farmer_Project.Services.Login;
+using Farmer_Project.Services.Member;
+using Farmer_Project.Services.Message;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,13 @@ builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 // 註冊登入服務
 builder.Services.AddScoped<ILoginService, LoginService>();
+
+// 註冊會員管理
+builder.Services.AddScoped<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+
+// 註冊訊息服務
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 // 註冊寄信服務
 builder.Services.AddScoped<EmailHelper>();

@@ -80,7 +80,7 @@
                     }
 
                     <!-- 發送郵件的表單 -->
-                    <form method="post" action="@Url.Action("SendEmail", "Manage")">
+                    <form method="post" action="@Url.Action("SendEmail", "Message")">
                         <div class="mb-3">
                             <label for="Message" class="form-label">訊息內容</label>
                             <textarea class="form-control" id="Message" name="message" rows="3" required></textarea>
@@ -92,18 +92,18 @@
             @* <div id="memberTable" style="display:@(TempData["dele"] != null && (bool)TempData["dele"] ? "block" : "none");"> 舊的程式碼*@
                 <div id="memberTable" style="display:@((TempData["dele"] as bool?) ?? false ? "block" : "none");">
                     <h3>會員列表 </h3>
-                    <form method="get" action="@Url.Action("Index", "Manage")">
+                    <form method="get" action="@Url.Action("Index", "Member")">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="搜尋會員" name="searchTerm" value="@ViewBag.SearchTerm" />
                             <button class="btn btn-outline-secondary" type="submit">搜尋</button>
                         </div>
                     </form>
 
-                    <a href="@Url.Action("Create", "Manage")" class="btn btn-sm btn-primary mb-3">新增</a>
-                    <form method="post" action="@Url.Action("ReloadData", "Manage")" class="d-inline">
+                    <a href="@Url.Action("Create", "Member")" class="btn btn-sm btn-primary mb-3">新增</a>
+                    <form method="post" action="@Url.Action("ReloadData", "Member")" class="d-inline">
                         <button type="submit" class="btn btn-sm btn-secondary mb-3">取消搜尋</button>
                     </form>
-                    <form method="post" action="@Url.Action("ReloadData", "Manage")">
+                    <form method="post" action="@Url.Action("ReloadData", "Member")">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -126,7 +126,7 @@
                                         <td>@member.Account</td>
                                         <td>
                                             <!-- 編輯操作 -->
-                                            <button type="submit" name="action" value="edit" class="btn btn-sm btn-warning" formaction="@Url.Action("Edit", "Manage", new { id = member.Id })">編輯</button>
+                                            <button type="submit" name="action" value="edit" class="btn btn-sm btn-warning" formaction="@Url.Action("Edit", "Member", new { id = member.Id })">編輯</button>
 
                                             <!-- 刪除操作 -->
                                             <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="@member.Id">刪除</button>

@@ -75,7 +75,7 @@ addClickListener("sendMessageBtn", function () {
     sendButton.innerText = "發送中...";
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/Manage/SendEmail", true); // 更新為正確的 API 路徑
+    xhr.open("POST", "/Message/SendEmail", true); // 更新為正確的 API 路徑
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhr.onload = function () {
@@ -106,7 +106,7 @@ document.querySelectorAll('.delete-btn').forEach(button => {
         // 動態創建一個表單
         const form = document.createElement('form');
         form.method = 'POST';  // 設置表單提交方式為 POST
-        form.action = '/Manage/Delete/' + memberId + '?show=memberTable';  // 在表單的 URL 上加入 show=memberTable 參數
+        form.action = '/Member/Delete/' + memberId + '?show=memberTable';  // 在表單的 URL 上加入 show=memberTable 參數
 
         // 將表單添加到 body 並提交
         document.body.appendChild(form);
