@@ -1,0 +1,20 @@
+/* styles.css */
+.dropdown-btn {
+    color: #ffffff; /* 設定下拉選單文字顏色 */
+    font-size: 16px;
+    background-color: #252525; /* 設定下拉選單背景顏色 */
+    border: 1px solid #252525; /* 設定邊框顏色 */
+    border-radius: 5px; /* 設定邊框圓角（可選） */
+    padding: 5px; /* 設定內邊距 */
+    width: 100px; /* 設定下拉選單寬度（可調整） */
+}
+
+.dropdown-btn option {
+    background-color: #252525; /* 設定背景顏色為黑色 */
+    color: white; /* 設定文字顏色為白色 */
+}
+
+.dropdown-btn option:disabled {
+    color: grey; /* 禁用選項的顏色（例如：會員專區） */
+    background-color: transparent; /* 禁用選項背景為透明 */
+}

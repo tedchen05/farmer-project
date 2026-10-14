@@ -1,0 +1,43 @@
+﻿@* 最上面的版面配置 *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- nav section -->
+
+<div class="container">
+    <form method="post" action="/Login/newPasswd">
+        <br />
+        <h2>密碼重設</h2>
+        <br />
+        <label>新密碼</label>
+        <br />
+        <input type="password" id="inputUserNewPasswd" name="passwd" required class="form-control" placeholder="輸入8~12位數的密碼組合" />
+        <div>
+            <span style="color:red">@ViewBag.Msg1</span>
+        </div>
+        <br /><br />
+        <label>再次輸入新密碼</label>
+        <br />
+        <input type="password" id="inputUserNewPasswd2" name="passwd2" required class="form-control" placeholder="輸入8~12位數的密碼組合" />
+        <div>
+            <span style="color:red">@ViewBag.Msg1</span>
+        </div>
+        <br /><br />
+        <input type="submit" name="submit" value="重設密碼" class="btn btn-primary" />
+        <br />
+        <br />
+    </form>
+</div>
+
+
+@*以下為回傳訊息的必須指令*@
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Serialize(TempData["message"]));
+        @* 專案類型"ASP.NET CORE WEB 應用程式(MVC)" 的用Json.Serialize; "ASP.NET WEB 應用程式(.NET Framework)" 的用Json.Encode *@
+        alert(message);
+    </script>
+}
+

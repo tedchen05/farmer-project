@@ -1,0 +1,62 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/css/contact.css" rel="stylesheet" />
+<!-- contact section -->
+<section class="contact_section layout_padding">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-lg-2 col-md-10 offset-md-1">
+                <div class="heading_container">
+                    <hr>
+                    <h2>
+                        聯絡我們
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="layout_padding2-top">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-2 col-md-5 offset-md-1">
+                    <div class="contact_form-container">
+                        <!-- 訊息框 -->
+                        @if (!string.IsNullOrEmpty(ViewBag.Message as string))
+                        {
+                            <div class="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        <!-- 表單 -->
+                        <form method="post" action="/Home/Contact">
+                            <div>
+                                <div>
+                                    <input type="text" id="Name" name="Name" class="form-control" placeholder="姓名" required />
+                                </div>
+                                <div>
+                                    <input type="email" id="Email" name="Email" class="form-control" placeholder="電子信箱" required />
+                                </div>
+                                <div>
+                                    <input type="text" id="Message" name="Message" class="message_input" rows="5" placeholder="訊息" required />
+                                </div>
+                                <div>
+                                    <button type="submit">
+                                        送出
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6 ">
+                    <div class="map_container">
+                        <div class="map-responsive">
+                            <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=聯成電腦公館" width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end contact section -->

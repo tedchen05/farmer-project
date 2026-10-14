@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Farmer_Project.Models.Entity
+@model List<FarmersArticles>
+
+<link href="/css/farmersIndex.css" rel="stylesheet" />
+
+<section class="fruit_section layout_padding" style="background-color: white;">
+    <div class="container mb-5">
+        <div class="heading_container">
+            <hr>
+            @if (Model != null && Model.Count > 0)
+            {
+                <h2>
+                    @Model[0].FarmersInfo.CropsType.ToUpper()
+                </h2>
+            }
+            else
+            {
+                <h2>
+                    "目前無合作對象"
+                </h2>
+            }
+        </div>
+        <div class="profile-area">
+            <div class="container">
+                <div class="row">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        @foreach (var farmer in Model)
+                        {
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="img1"><img src="@farmer.ArticleImagePath" alt="" /></div>
+                                    <div class="img2"><img src="@farmer.FarmersArticlesDetails[0].SubImagePath" alt="" /></div>
+                                    <div class="main-text">
+                                        <h2>@farmer.ArticleTitle</h2>
+                                        <p>@farmer.ArticleSummary</p>
+                                    </div>
+                                    <a href="/Farmers/FarmerDetail/@farmer.FarmersId/@farmer.ArticlesId" class="btn mb-2 text-primary">
+                                        <i class="fa-duotone fa-solid fa-angles-right"></i> 了解更多 <i class="fa-duotone fa-solid fa-angles-left"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

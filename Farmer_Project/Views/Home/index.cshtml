@@ -1,0 +1,311 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Slider
+{
+    <!-- slider section -->
+    <section class=" slider_section position-relative">
+        <div id="carouselExampleControls" class="carousel slide " data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="img-box">
+                        <img src="~/images/slider1.jpg" alt="">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="img-box">
+                        <img src="~/images/slider2.jpg" alt="">
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="img-box">
+                        <img src="~/images/slider-3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </section>
+    <!-- end slider section -->
+}
+
+<!-- about section -->
+<section class="about_section layout_padding">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 px-0">
+                <div class="img-box">
+                    <img src="~/images/about-1.jpg" alt="">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="detail-box">
+                    <div class="heading_container">
+                        <hr>
+                        <h2>
+                            關於我們
+                        </h2>
+                    </div>
+                    <p>
+                        小農資訊平台致力於分享來自土地的故事，透過真實的內容展示小農的努力與產地的純淨。我們相信，每一片田地與作物背後，都有值得被看見的價值與文化。透過平台，讓您了解在地農業的多樣性，並支持小農的初心與用心
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end about section -->
+
+<!-- fruit section -->
+
+<section class="fruit_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <hr>
+            <h2>
+                優質小農
+            </h2>
+        </div>
+    </div>
+    <div class="container-fluid">
+
+        <div class="fruit_container">
+            <div class="box">
+                <img src="~/images/f-8.jpg" alt="">
+                <div class="link_box">
+                    <h5>
+                        Coffee
+                    </h5>
+                    <a href="/Farmers/FarmersIndex/Coffee">
+                        Read More
+                    </a>
+                </div>
+            </div>
+            <div class="box">
+                <img src="~/images/f-5.jpg" alt="">
+                <div class="link_box">
+                    <h5>
+                        Mango
+                    </h5>
+                    <a href="/Farmers/FarmersIndex/Mango">
+                        Read More
+                    </a>
+                </div>
+            </div>
+            <div class="box">
+                <img src="~/images/f-7.jpg" alt="">
+                <div class="link_box">
+                    <h5>
+                        Tea
+                    </h5>
+                    <a href="/Farmers/farmersIndex">
+                        Read More
+                    </a>
+                </div>
+            </div>
+            <div class="box">
+                <img src="~/images/f-9.jpg" alt="">
+                <div class="link_box">
+                    <h5>
+                        Milk
+                    </h5>
+                    <a href="">
+                        Read More
+                    </a>
+                </div>
+            </div>
+            <div class="box">
+                <img src="~/images/f-4.jpg" alt="">
+                <div class="link_box">
+                    <h5>
+                        Apple
+                    </h5>
+                    <a href="">
+                        Read More
+                    </a>
+                </div>
+            </div>
+            <div class="box">
+                <img src="~/images/f-brand.jpg" alt="">
+                <div class="link_box">
+                    <h5>
+                        Cacao
+                    </h5>
+                    <a href="#">
+                        Read More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end fruit section -->
+<!-- client section -->
+<section class="client_section layout_padding">
+    <link href="/css/testimonial.css" rel="stylesheet" />
+    <div class="container ">
+        <div class="heading_container">
+            <h2>
+                優質小農介紹
+            </h2>
+            <hr>
+        </div>
+        <div id="carouselExample2Controls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="client_container layout_padding-top">
+                        <div class="img-box">
+                            <a href="/Farmers/FarmerDetail/1/2">
+                                <img src="~/images/circular_image_1.png" alt="卓武山 咖啡農場">
+                            </a>
+                        </div>
+                        <div class="detail-box">
+                            <p class="custom-text">
+                                <img src="~/images/left-quote.png" alt="">
+                                <span class="custom-title">
+                                    卓武山 咖啡農場
+                                </span>
+                                <img src="~/images/right-quote.png" alt="">
+                                <br></br>
+                                <span class="custom-paragraph">
+                                    二十年前，因為家裡的茶園位於阿里山較低的海拔，
+                                    <br></br>
+                                    茶葉價格始終無法與海拔三千公尺以上的茶園相比，
+                                    <br></br>
+                                    因此許定耀與父親合力將全部的茶樹砍除，全改種咖啡……
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="client_container layout_padding-top">
+                        <div class="img-box">
+                            <a href="/Farmers/FarmerDetail/1/3">
+                                <img src="~/images/circular_image_2.png" alt="">
+                            </a>
+                        </div>
+                        <div class="detail-box">
+                            <p class="custom-text">
+                                <img src="~/images/left-quote.png" alt="">
+                                <span class="custom-title">
+                                    郝策園
+                                </span>
+                                <img src="~/images/right-quote.png" alt="">
+                                <br></br>
+                                <span class="custom-paragraph">
+                                    23歲那一年，有著咖啡王子稱號的方政倫，
+                                    <br><br>
+                                    決定從北部返鄉回阿里山上，協助家族事業的茶園及蘭花園。
+                                    <br><br>
+                                    但十幾年的北部生活，一時無法適應城鄉差距，讓他感到失去生活熱情及目標……
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="client_container layout_padding-top">
+                        <div class="img-box">
+                            <a href="/Farmers/FarmerDetail/2/5">
+                                <img src="~/images/circular_image_3.png" alt="">
+                            </a>
+                        </div>
+                        <div class="detail-box">
+                            <p class="custom-text">
+                                <img src="~/images/left-quote.png" alt="">
+                                <span class="custom-title">
+                                    太陽農場
+                                </span>
+                                <img src="~/images/right-quote.png" alt="">
+                                <br><br>
+                                <span class="custom-paragraph">
+                                    太陽農場，位於自然美景之中，擁有豐富的土地與純粹的農產品。
+                                    <br><br>
+                                    我們專注於可持續農業，提供新鮮、無污染的農產品，讓每一位顧客品嚐到大自然的真實味道。
+                                    <br><br>
+                                    在這片土地上，栽種的不僅是作物，更是對環境與健康的承諾。
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExample2Controls" role="button" data-slide="prev">
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExample2Controls" role="button" data-slide="next">
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- end client section -->
+<!-- contact section -->
+<section class="contact_section layout_padding">
+    <link href="/css/contact.css" rel="stylesheet" />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-lg-2 col-md-10 offset-md-1">
+                <div class="heading_container">
+                    <hr>
+                    <h2>
+                        聯絡我們
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="layout_padding2-top">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-2 col-md-5 offset-md-1">
+                    <div class="contact_form-container">
+                        <!-- 訊息框 -->
+                        @if (!string.IsNullOrEmpty(ViewBag.Message as string))
+                        {
+                            <div class="alert">
+                                @ViewBag.Message
+                            </div>
+                        }
+                        <!-- 表單 -->
+                        <form method="post" action="/Home/Contact">
+                            <div>
+                                <div>
+                                    <input type="text" id="Name" name="Name" class="form-control" placeholder="姓名" required />
+                                </div>
+                                <div>
+                                    <input type="email" id="Email" name="Email" class="form-control" placeholder="電子信箱" required />
+                                </div>
+                                <div>
+                                    <input type="text" id="Message" name="Message" class="message_input" rows="5" placeholder="留言" required />
+                                </div>
+                                <div>
+                                    <button type="submit">
+                                        送出
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6 ">
+                    <div class="map_container">
+                        <div class="map-responsive">
+                            <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=聯成電腦公館" width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end contact section -->

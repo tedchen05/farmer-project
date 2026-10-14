@@ -1,0 +1,27 @@
+# 建置輸出
+bin/
+obj/
+build/
+dist/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio / VS Code
+.vs/
+.vscode/settings.json
+*.user
+*.suo
+*.spec
+
+# Python 快取與虛擬環境
+__pycache__/
+*.py[cod]
+.venv/
+
+# 資料檔與個人筆記
+*.csv
+個人筆記/
+*.local.md

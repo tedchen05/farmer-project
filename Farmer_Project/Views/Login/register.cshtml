@@ -1,0 +1,56 @@
+﻿@* 最上面的版面配置 *@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- nav section -->
+
+<!-- end nav section -->
+
+<div class="container">
+    <form method="post" action="/Login/register">
+        <br />
+        <h2>會員註冊</h2>
+        <br />
+        <label>*會員暱稱</label>
+        <br />
+        <input type="text" id="inputUserName" name="nickname" required class="form-control" placeholder="建議不要使用真實姓名" />  @*這裡的name可以設定後面*@
+        <div>
+            <span style="color:red">@ViewBag.Msg1</span>
+        </div>
+        <br /><br />
+        <label>*會員帳號</label>
+        <br />
+        <input type="text" id="inputUserAccount" name="account" required class="form-control" placeholder="使用您的電子信箱" />
+        <div>
+            <span style="color:red">@ViewBag.Msg2</span>
+        </div>
+        <br /><br />
+        <label>*會員密碼</label>
+        <br />
+        <input type="password" id="inputUserPasswd" name="passwd" required class="form-control" placeholder="輸入8~12位數的密碼組合" />
+        <div>
+            <span style="color:red">@ViewBag.Msg3</span>
+        </div>
+        <br /><br />
+        @*<label>*再次輸入密碼</label>
+        <br />
+        <input type="text" name="passwd2" />
+        <br /><br />*@
+        <input type="submit" name="submit" value="註冊" class="btn btn-primary" />
+        <br />
+        <br />
+    </form>
+</div>
+
+
+
+@*以下為回傳訊息的必須指令*@
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Serialize(TempData["message"]));
+        @* 專案類型"ASP.NET CORE WEB 應用程式(MVC)" 的用Json.Serialize; "ASP.NET WEB 應用程式(.NET Framework)" 的用Json.Encode *@
+        alert(message);
+    </script>
+}

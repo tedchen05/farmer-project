@@ -1,0 +1,40 @@
+﻿@model Farmer_Project.Models.Entity.MemberInformation
+
+@{
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+}
+
+<div class="d-flex justify-content-center mt-5">
+    <div>
+        <h2 class="text-center mb-4">後台管理系統-編輯會員資料</h2>
+        <form method="post" action="@Url.Action("Update", "Manage")">
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div class="mb-3">
+                <label for="Sort" class="form-label">權限</label>
+                <input type="text" class="form-control" id="Sort" name="sort" value="@Model.Sort" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="NickName" class="form-label">名稱</label>
+                <input type="text" class="form-control" id="NickName" name="nickName" value="@Model.NickName" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="Account" class="form-label">帳號</label>
+                <input type="email" class="form-control" id="Account" name="account" value="@Model.Account" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="Passwd" class="form-label">密碼</label>
+                <input type="password" class="form-control" id="Passwd" name="passwd" value="@Model.Passwd" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">更新</button>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("DashBoard", "Farmers")';">返回</button>
+        </form>
+    </div>
+</div>
+
+
+

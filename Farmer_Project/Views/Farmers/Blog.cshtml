@@ -1,0 +1,97 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Farmer_Project.Models.Entity
+@model List<FarmersArticles>
+
+<style>
+    .cus_hover {
+        transition: all 0.3s ease;
+    }
+
+    .cus_hover:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+    .cus_bg_color {
+        background-color: #D9EFEA;
+    }
+
+    .rounded {
+        border-radius: 30px;
+    }
+
+    .cus_aText_hover {
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .cus_aText_hover:hover {
+        color: #E89C33;
+    }
+</style>
+
+
+<section class="fruit_section layout_padding">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-7 col-xl-8 mt-0">
+                @foreach (var article in Model)
+                {
+                    <div class="cus_bg_color p-4 rounded mb-3 cus_hover">
+                        <div class="row g-4 align-items-center ">
+                            <div class="col-md-6">
+                                <div class="rounded overflow-hidden">
+                                    <img src="@article.ArticleImagePath" class="img-fluid rounded img-zoomin w-100" alt="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex flex-column">
+                                    <a href="/Farmers/Articles/@article.FarmersId/@article.ArticlesId" class="h3 cus_aText_hover">@article.ArticleTitle</a>
+                                    <p class="mb-0 fs-5">
+                                        @if (article.ArticleSummary.Length > 60)
+                                        {
+                                            @(article.ArticleSummary.Substring(0, 60) + "...")
+                                        }
+                                        else
+                                        {
+                                            @article.ArticleSummary
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>                           
+                    </div>
+                }
+            </div>
+
+
+            <div class="col-lg-5 col-xl-4">
+                <div class="bg-light rounded p-4 pt-0">
+                    <div class="row g-4">                   
+                        <div class="col-12">
+                            <h3>文章標籤</h3>
+                            <div class="row">           
+                                <div class="col-4 mb-2">
+                                    <a href="/Farmers/Blog/Coffee" class="btn btn-warning rounded-5 w-100">
+                                        Coffee
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-2">
+                                    <a href="/Farmers/Blog/Mango" class="btn btn-warning rounded-5 w-100">
+                                        Mango
+                                    </a>
+                                </div>
+                                <div class="col-4 mb-2">
+                                    <a href="/Farmers/Blog/All" class="btn btn-warning rounded-5 w-100">
+                                        All
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,17 @@
+.custom-text {
+    font-family: "Microsoft JhengHei", Arial, sans-serif; /* 字體 */
+    font-size: 18px; /* 字體大小 */
+    line-height: 1.6; /* 行距 */
+    color: #333; /* 文字顏色 */
+}
+
+.custom-title {
+    font-size: 25px;
+    font-weight: bold;
+    color: #555;
+}
+
+.custom-paragraph {
+    font-size: 20px;
+    margin-top: 10px;
+}

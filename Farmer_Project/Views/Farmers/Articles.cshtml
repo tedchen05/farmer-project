@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Farmer_Project.Models.Entity
+@model FarmersArticles
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg">
+                <div class="mb-4">
+                    <a href="#" class="h1 display-5">@Model.ArticleTitle</a>
+                </div>
+                <div class="position-relative rounded overflow-hidden mb-3">
+                    <img src="@Model.ArticleImagePath" class="img-zoomin img-fluid rounded w-100" alt="">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> 06 minute read</a>
+                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> 3.5k Views</a>
+                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i> 05 Comment</a>
+                    <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k Share</a>
+                </div>
+                <p class="my-5 h3" >
+                    @Html.Raw(Model.ArticleSummary.Replace("\r\n", "<br />").Replace("\n", "<br />"))
+                </p>
+
+                @foreach (var detail in Model.FarmersArticlesDetails)
+                {
+                    <div class="bg-light p-4 mb-4 rounded border-start border-3 border-primary">
+                        <h1 class="mb-2">@detail.SubTitle</h1>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="rounded overflow-hidden">
+                                <img src="@detail.SubImagePath" class="img-zoomin img-fluid rounded w-100" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="my-5 h3">
+                        @Html.Raw(detail.SubContent.Replace("\r\n", "<br />").Replace("\n", "<br />"))                       
+                    </p>
+                }
+
+                
+                <div class="tab-class">
+                    <div class="d-flex justify-content-between border-bottom mb-4">
+                        <ul class="nav nav-pills d-inline-flex text-center">
+                            <li class="nav-item mb-3">
+                                <h5 class="mt-2 me-3 mb-0">Tags:</h5>
+                            </li>
+                            <li class="nav-item mb-3">
+                                <a class="d-flex py-2 bg-light rounded-pill active me-2" data-bs-toggle="pill" href="#tab-1">
+                                    <span class="text-dark" style="width: 100px;">咖啡</span>
+                                </a>
+                            </li>
+                            <li class="nav-item mb-3">
+                                <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-2">
+                                    <span class="text-dark" style="width: 100px;">優質小農</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane fade show active">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-3">
+                                    <img src="@Model.FarmersInfo.Image" class="img-fluid w-100 rounded" alt="">
+                                </div>
+                                <div class="col-9">
+                                    <h3>@Model.FarmersInfo.Name</h3>
+                                    <p class="mb-0 f-3">
+                                        <i class="fa-solid fa-house"></i> @Model.FarmersInfo.FarmName
+                                    </p>
+                                    <p class="mb-0 f-3">
+                                        <i class="fa-solid fa-envelope"></i> @Model.FarmersInfo.Email
+                                    </p>
+                                    <p class="mb-0 f-3">
+                                        <i class="fa-solid fa-phone"></i> @Model.FarmersInfo.Phone
+                                    </p>
+                                    <p class="mb-0 f-3">
+                                        <i class="fa-solid fa-location-dot"></i> @Model.FarmersInfo.Address
+                                    </p>           
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                      
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>小農分享平台</title>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="~/css/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/login.css">
+
+</head>
+
+<body class="@ViewData["BodyClass"]">
+    <div class="hero_area">
+        <!-- header section strats -->
+        <div class="brand_box">
+        </div>
+        <!-- end header section -->
+        <div>
+            @RenderSection("Slider", required: false)
+        </div>
+    </div>
+    <!-- nav section -->
+    <link href="/css/banner.css" rel="stylesheet" />
+    <section class="nav_section">
+        <div class="container">
+            <div class="custom_nav2">
+                <nav class="navbar navbar-expand custom_nav-container ">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="d-flex  flex-column flex-lg-row align-items-center">
+                            <ul class="navbar-nav  ">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="/Home/index">首頁 <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Home/about">關於我們</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Home/crop">優質小農</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Home/testimonial">小農推薦</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Farmers/Blog">部落格</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Home/contact">聯絡我們</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ms-auto">
+                                @if (Context.Session.GetString("IsLoggedIn") == "true")
+                                {
+                                    <select class="dropdown-btn" onchange="window.location.href=this.value;">
+                                        <option value="#" disabled selected>會員專區</option>
+                                        <option value="@Url.Action("reviseAccount", "Login")">會員修改</option>
+                                        <option value="@Url.Action("Logout1", "Home")">登出</option>
+                                    </select>
+
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("login", "Home")">登入</a>
+                                    </li>
+                                }
+                            </ul>
+                            <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0" action="/Farmers/FarmersIndex" method="get">
+                                <input class="form-control" type="text" placeholder="Search" name="keyword" autofocus
+                                       style="width: 150px; height: 40px; font-size: 16px; padding: 10px; border-radius: 5px;">
+                                <button class="btn my-2 my-sm-0 nav_search-btn" type="submit"></button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <!-- end nav section -->
+    <!-- insert block -->
+    <div>
+        @RenderBody()
+    </div>
+    <!-- end insert block -->
+    <!-- info section -->
+    <section class="info_section layout_padding">
+        <div class="container">
+            <div class="info_logo">
+                <h2>
+                    小農資訊平台
+                </h2>
+            </div>
+            <div class="info_contact">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div>
+                            <img src="~/images/location.png" alt="">
+                            <span>
+                                100台北市中正區羅斯福路三段272號3樓
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <img src="~/images/call.png" alt="">
+                            <span>
+                                (02)2364-8885
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <img src="~/images/mail.png" alt="">
+                            <span>
+                                Iccent@gmail.com
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="info_social">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end info section -->
+    <!-- footer section -->
+    
+    <!-- footer section -->
+
+    <script type="text/javascript" src="~/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="~/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/js/custom.js"></script>
+
+</body>
+
+</html>

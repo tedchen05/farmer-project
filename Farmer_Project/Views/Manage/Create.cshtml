@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增會員</title>
+</head>
+<body>
+    <div class="d-flex justify-content-center mt-5">
+        <div>
+            <h2 class="text-center mb-4">後台管理系統-新增會員資料</h2>
+            <form method="post" action="@Url.Action("Create", "Manage")">
+                <div class="mb-3">
+                    <label for="Sort" class="form-label">權限</label>
+                    <input type="text" class="form-control" placeholder="0：一般會員；1：系統管理者" id="Sort" name="sort" required />
+                </div>
+                <div class="mb-3">
+                    <label for="NickName" class="form-label">暱稱</label>
+                    <input type="text" class="form-control" placeholder="建議不要使用真實姓名" id="NickName" name="nickName" required />
+                </div>
+                <div class="mb-3">
+                    <label for="Account" class="form-label">帳號</label>
+                    <input type="email" class="form-control" placeholder="使用您的電子信箱" id="Account" name="account" required />
+                </div>
+                <div class="mb-3">
+                    <label for="Passwd" class="form-label">密碼</label>
+                    <input type="password" class="form-control" placeholder="輸入8~12位數的密碼組合" id="Passwd" name="passwd" required />
+                </div>
+                <button type="submit" class="btn btn-primary">新增</button>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='@Url.Action("DashBoard", "Farmers")';">返回</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

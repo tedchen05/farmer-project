@@ -1,0 +1,147 @@
+﻿<!-- 引入 FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- 引入 Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+@model FarmersArticlesViewModel
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>編輯文章</h2>
+            <hr />
+
+            <form class="form rounded" asp-action="FarmersArtEdit" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="FarmersId" value="@Model.FarmersId" />
+                <input type="hidden" name="ArticlesId" value="@Model.ArticlesId" />
+
+                <div class="rounded-3 bg-light p-3 shadow mb-3">
+                    <!-- 文章類型 -->
+                    <div class="mb-3">
+                        <label for="Articles.ArticleType" class="form-label">文章類型</label>
+                        <select class="form-select" name="Articles.ArticleType">
+                            <option value="" @(string.IsNullOrEmpty(Model.Articles.ArticleType) ? "selected" : "")>-- 請選擇 --</option>
+                            <option value="小農介紹" @(Model.Articles.ArticleType == "小農介紹" ? "selected" : "")>小農介紹</option>
+                            <option value="一般文章" @(Model.Articles.ArticleType == "一般文章" ? "selected" : "")>一般文章</option>
+                        </select>
+                    </div>
+
+                    <!-- 文章標題 -->
+                    <div class="mb-3">
+                        <label for="Articles.ArticleTitle" class="form-label">文章標題</label>
+                        <input type="text" class="form-control" name="Articles.ArticleTitle" value="@Model.Articles.ArticleTitle">
+                    </div>
+
+                    <!-- 文章圖片 -->
+                    <div class="mb-3">
+                        <label for="Articles.ArticleImage" class="form-label">文章圖片</label>
+                        <input type="file" class="form-control" name="Articles.ArticleImage">
+                        @if (!string.IsNullOrEmpty(Model.Articles.ArticleImagePath))
+                        {
+                            <img src="@Model.Articles.ArticleImagePath" class="img-thumbnail mt-2" style="max-width: 200px; max-height: 200px;" />
+                        }
+                    </div>
+
+                    <!-- 文章簡介 -->
+                    <div class="mb-3">
+                        <label for="Articles.ArticleSummary" class="form-label">文章簡介</label>
+                        <textarea class="form-control" name="Articles.ArticleSummary" rows="8">@Model.Articles.ArticleSummary</textarea>
+                    </div>
+                </div>
+
+                <div class="bg-light rounded">
+                    <!-- 動態段落容器 -->
+                    <div id="subParagraphsContainer">
+                        @for (int i = 0; i < Model.ArticleDetails.Count; i++)
+                        {
+                            <div id="subParagraphs_@i" class="border shadow p-3 mb-3 rounded">
+                                <input type="hidden" name="ArticleDetails[@i].DetailId" value="@Model.ArticleDetails[i].DetailId" />
+                                <div class="mb-3">
+                                    <label for="ArticleDetails[@i].SubTitle" class="form-label">段落標題</label>
+                                    <input type="text" class="form-control" name="ArticleDetails[@i].SubTitle" value="@Model.ArticleDetails[i].SubTitle">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ArticleDetails[@i].SubImage" class="form-label">段落圖片</label>
+                                    <input type="file" class="form-control" name="ArticleDetails[@i].SubImage">
+                                    @if (!string.IsNullOrEmpty(Model.ArticleDetails[i].SubImagePath))
+                                    {
+                                        <img src="@Model.ArticleDetails[i].SubImagePath" class="img-thumbnail mt-2" style="max-width: 200px; max-height: 200px;" />
+                                    }
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ArticleDetails[@i].SubContent" class="form-label">段落內容</label>
+                                    <textarea class="form-control" name="ArticleDetails[@i].SubContent" rows="8">@Model.ArticleDetails[i].SubContent</textarea>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <hr>
+
+                <!-- 添加和減少段落 -->
+                <div>
+                    <p><i id="addParagraphs" class="fa-solid fa-plus" style="cursor:pointer;"> 新增段落</i></p>
+                    <p><i id="removeParagraphs" class="fa-solid fa-minus" style="cursor:pointer;"> 減少段落</i></p>
+                </div>
+
+                <hr>
+
+                <!-- 保存與送出按鈕 -->
+                <div class="d-flex">
+                    <div class="me-2">
+                        <button type="submit" class="btn btn-primary" name="action" value="false">保存</button>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" name="action" value="true">送出</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 段落處理 -->
+<script>
+        let paragraphsCount = @Model.ArticleDetails.Count - 1;
+
+        document.getElementById('addParagraphs').addEventListener('click', function () {
+            paragraphsCount++;
+
+        let newParagraph = document.createElement('div');
+    newParagraph.classList.add('border', 'shadow', 'p-3', 'mb-3', 'rounded');
+    newParagraph.setAttribute('id', 'subParagraphs_' + paragraphsCount);
+
+        newParagraph.innerHTML = `
+        <input type="hidden" name="ArticleDetails[${paragraphsCount}].DetailId" value="${paragraphsCount + 1}" />
+            <div class="mb-3">
+            <label for="ArticleDetails[${paragraphsCount}].SubTitle" class="form-label">段落標題</label>
+            <input type="text" class="form-control" name="ArticleDetails[${paragraphsCount}].SubTitle">
+            </div>
+        <div class="mb-3">
+                    <label for="ArticleDetails[${paragraphsCount}].SubImage" class="form-label">段落圖片</label>
+                <input type="file" class="form-control" name="ArticleDetails[${paragraphsCount}].SubImage">
+                </div>
+                <div class="mb-3">
+                    <label for="ArticleDetails[${paragraphsCount}].SubContent" class="form-label">段落內容</label>
+                    <textarea class="form-control" name="ArticleDetails[${paragraphsCount}].SubContent" rows="8"></textarea>
+                </div>`;
+            document.getElementById('subParagraphsContainer').appendChild(newParagraph);
+        });
+
+        document.getElementById('removeParagraphs').addEventListener('click', function () {
+               const userConfirmed = confirm("減少段落可能會遺失您現有段落內容，確定要減少段落嗎？");
+
+                if (userConfirmed) {
+                    if (paragraphsCount > 0) {
+
+                        const lastParagraphs = document.getElementById('subParagraphs_' + paragraphsCount);
+                    lastParagraphs.remove();
+                    paragraphsCount--;
+                }
+            else {
+                    alert("已經最後一段無法刪除");
+        }
+        }
+        });
+</script>
