@@ -43,9 +43,25 @@ git clone <repository-url>
 cd Farmer_Project
 ```
 
+## 資料庫連線設定
+
+連線字串設定於 `Farmer_Project/appsettings.json` 的 `ConnectionStrings:DefaultConnection`，
+使用 SQL Server 帳號登入（`User Id` / `Password`）。
+
+本機開發使用 LocalDB，需先在資料庫建立對應的登入帳號，例如：
+
+```sql
+CREATE LOGIN admin WITH PASSWORD = '12345678', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
+USE Farmers;
+CREATE USER admin FOR LOGIN admin;
+ALTER ROLE db_owner ADD MEMBER admin;
+```
+
+部署時將連線字串的伺服器位址與帳密改為正式資料庫即可。
+
 ## 執行
 
-1. 確認 `Farmer_Project/appsettings.json` 的連線字串指向本機 LocalDB。
+1. 依上一節設定連線字串與登入帳號。
 2. 建立資料庫（套用 Migration）：
 
    ```bash
@@ -71,7 +87,7 @@ cd Farmer_Project
 ## 常見問題
 
 **Q：啟動後出現資料庫連線錯誤？**
-A：確認 LocalDB 已安裝並啟動，且 `appsettings.json` 的連線字串正確；首次執行需先跑 `dotnet ef database update` 建立資料表。
+A：確認 LocalDB 已安裝並啟動、`appsettings.json` 連線字串正確、且已建立對應的登入帳號；首次執行需先跑 `dotnet ef database update` 建立資料表。
 
 **Q：圖片上傳後找不到？**
 A：上傳的圖片存放於 `wwwroot/images`，檔名以內容的 MD5 命名；請確認該資料夾存在且有寫入權限。

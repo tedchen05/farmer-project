@@ -1,4 +1,5 @@
 using Farmer_Project.Helpers;
+using Farmer_Project.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,39 +7,42 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//«Ø¥ß¸ê®Æªí¬M®g¦ê±µ
+//å»ºç«‹è³‡æ–™è¡¨æ˜ å°„ä¸²æ¥
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// °t¸mªA°È
+// è¨»å†Šæœƒå“¡æœå‹™
+builder.Services.AddScoped<IMemberService, MemberService>();
+
+// é…ç½®æœå‹™
 builder.Services.AddControllersWithViews();
-builder.Services.AddDistributedMemoryCache(); // ¥Î©ó¦sÀx Session
+builder.Services.AddDistributedMemoryCache(); // ç”¨æ–¼å­˜å„² Session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // ³]©w Session ªº¹L´Á®É¶¡
-    options.Cookie.HttpOnly = true;                // ¼W±j¦w¥ş©Ê
-    options.Cookie.IsEssential = true;             // ½T«O Cookie ²Å¦X GDPR
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // è¨­å®š Session çš„éæœŸæ™‚é–“
+    options.Cookie.HttpOnly = true;                // å¢å¼·å®‰å…¨æ€§
+    options.Cookie.IsEssential = true;             // ç¢ºä¿ Cookie ç¬¦åˆ GDPR
 });
 
-// ²K¥[ HttpContextAccessor
+// æ·»åŠ  HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
-// ²K¥[ºŞ²zªÌ±ÂÅvµ¦²¤
+// æ·»åŠ ç®¡ç†è€…æˆæ¬Šç­–ç•¥
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
         policy.RequireAssertion(context =>
         {
             var userSort = context.User.FindFirst("Sort")?.Value;
-            return userSort == "1"; // 1 ªí¥ÜºŞ²zªÌ
+            return userSort == "1"; // 1 è¡¨ç¤ºç®¡ç†è€…
         }));
 });
 
 
-// ºc«ØÀ³¥Îµ{¦¡
+// æ§‹å»ºæ‡‰ç”¨ç¨‹å¼
 var app = builder.Build();
 
-// ¦Û°Ê°õ¦æ¾E²¾»P§ó·s¸ê®Æ®w
+// è‡ªå‹•åŸ·è¡Œé·ç§»èˆ‡æ›´æ–°è³‡æ–™åº«
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -57,14 +61,14 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseSession(); // ±Ò¥Î Session
+app.UseSession(); // å•Ÿç”¨ Session
 app.UseRouting();
 
 app.UseAuthorization();
 
 
 
-//«È»s¤Æ¸ô¥Ñ
+//å®¢è£½åŒ–è·¯ç”±
 app.MapControllerRoute(
     name: "farmersArticles",
     pattern: "Farmers/Articles/{FarmersId}/{ArticlesId}",
@@ -85,7 +89,7 @@ app.MapControllerRoute(
     pattern: "Farmers/Blog/{CropsType?}",
     defaults: new { controller = "Farmers", action = "Blog" });
 
-//¹w³]¸ô¥Ñ
+//é è¨­è·¯ç”±
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

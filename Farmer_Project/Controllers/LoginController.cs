@@ -1,4 +1,5 @@
 ﻿using Farmer_Project.Models.ViewModel;
+using Farmer_Project.Services;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -8,11 +9,13 @@ namespace Farmer_Project.Controllers
     public class LoginController : Controller
     {
         private readonly AppDbContext _DbContext;
+        private readonly IMemberService _memberService;
 
-        
-        public LoginController(AppDbContext DbContext)
+
+        public LoginController(AppDbContext DbContext, IMemberService memberService)
         {
             _DbContext = DbContext;
+            _memberService = memberService;
         }
 
         // 註冊登入［忘記密碼］
@@ -73,8 +76,7 @@ namespace Farmer_Project.Controllers
         public IActionResult resetPasswd(forgetPasswd userAccount)
         {
             ViewData["BodyClass"] = "sub_page";   // 此用於頁面上出現個空白框
-            DBmanager dbmanager = new DBmanager();
-            List<string> accounts = dbmanager.checkAccounts(userAccount, _DbContext);   // 此為啟動DBmanager當中的checkAccounts指令
+            bool accountExists = _memberService.IsAccountTaken(userAccount.account);   // 確認帳號是否存在
             // 驗證表單是否完整
             if (string.IsNullOrEmpty(userAccount.account))
             {
@@ -87,7 +89,7 @@ namespace Farmer_Project.Controllers
                 ViewBag.Msg1 = "帳號輸入錯誤";
                 return View();
             }
-            else if (accounts.Count == 0)
+            else if (!accountExists)
             {
                 ViewBag.Msg1 = "這個帳號不存在";
                 return View();
@@ -113,10 +115,9 @@ namespace Farmer_Project.Controllers
         {
             ViewData["BodyClass"] = "sub_page";   // 此用於頁面上出現個空白框
             string account = HttpContext.Session.GetString("ResetPwdUserId");  // 此用於將儲存的變數 "Session["ResetPwdUserId"]"代入
-            DBmanager dbmanager = new DBmanager();
             try
             {
-                dbmanager.updatePasswd(userPasswd, account, _DbContext);   // 此為啟動DBmanager當中的registerAccount指令，並且把變數 "user" 接收的資料加入進去
+                _memberService.UpdatePassword(account, userPasswd.passwd);   // 更新該帳號密碼
             }
             catch (Exception e)
             {
@@ -153,12 +154,10 @@ namespace Farmer_Project.Controllers
         public IActionResult register(register user)
         {
             ViewData["BodyClass"] = "sub_page";   // 此用於頁面上出現個空白框
-            DBmanager dbmanager = new DBmanager();
-            List<string> accounts = dbmanager.NoSameAccounts(user, _DbContext);   // 此為啟動DBmanager當中的newAccount指令
-            int Count = accounts.Count;
+            bool accountTaken = _memberService.IsAccountTaken(user.account);   // 確認帳號是否重複
             try
             {
-                dbmanager.registerAccount(user, Count, _DbContext);   // 此為啟動DBmanager當中的registerAccount指令，並且把變數 "user" 接收的資料加入進去
+                _memberService.Register(user.nickName, user.account, user.passwd);   // 註冊新會員
             }
             catch (Exception e)
             {
@@ -216,7 +215,7 @@ namespace Farmer_Project.Controllers
                 ViewBag.Msg3 = "密碼需要8~12位數的符號";
                 return View();
             }
-            else if (accounts.Count != 0)
+            else if (accountTaken)
             {
                 ViewBag.Msg2 = "帳號已經存在";
                 return View();

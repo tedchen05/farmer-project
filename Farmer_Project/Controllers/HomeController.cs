@@ -1,6 +1,7 @@
 ﻿using Farmer_Project.Helpers;
 using Farmer_Project.Models;
 using Farmer_Project.Models.ViewModel;
+using Farmer_Project.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
@@ -9,11 +10,13 @@ namespace Farmer_Project.Controllers
     {
         private readonly EmailHelper _emailHelper;
         private readonly AppDbContext _DbContext;
+        private readonly IMemberService _memberService;
 
-        public HomeController(AppDbContext DbContext)
+        public HomeController(AppDbContext DbContext, IMemberService memberService)
         {
             _emailHelper = new EmailHelper();
             _DbContext = DbContext;
+            _memberService = memberService;
         }
 
         public IActionResult index()
@@ -86,11 +89,7 @@ namespace Farmer_Project.Controllers
             }
             Response.Cookies.Append("UserAccount", member.account, new CookieOptions { Expires = DateTimeOffset.Now.AddHours(1) });
 
-            DBmanager dbmanager = new DBmanager();
-            List<string> accounts = dbmanager.loginAccounts(member, _DbContext); // 呼叫 loginAccounts 進行帳號驗證
-
-            // 將 accounts 列表存儲到 session 中
-
+            var result = _memberService.Login(member.account, member.passwd); // 帳號驗證
 
             // 檢查帳號格式
             if (!member.account.Contains(".com"))
@@ -100,38 +99,29 @@ namespace Farmer_Project.Controllers
             }
 
             // 檢查帳號是否存在
-            if (accounts.Contains("帳號不存在"))
+            if (result.Status == LoginStatus.AccountNotFound)
             {
                 ViewBag.Msg3 = "這個帳號不存在";
                 return View();
             }
 
             // 檢查密碼錯誤
-            if (accounts.Contains("密碼錯誤"))
+            if (result.Status == LoginStatus.WrongPassword)
             {
                 ViewBag.Msg4 = "密碼輸入錯誤";
                 return View();
             }
 
-            // 檢查帳號是否同時存在於一般會員和管理者
-            if (accounts.Contains("一般會員") && accounts.Contains("管理者"))
-            {
-                TempData["message"] = $"登入失敗！\n警告：{member.account}這個帳號同時擁有一般會員和管理者的權限。";
-                return RedirectToAction("Login");
-            }
-
             HttpContext.Session.SetString("IsLoggedIn", "true");
             HttpContext.Session.SetString("UserName", member.account);
-            if (accounts.Contains("一般會員"))
+            if (result.Role == MemberRole.Member)
             {
                 HttpContext.Session.SetString("UserRole", "Member"); // 記錄用戶角色
-                // TempData["message"] = "登入成功\n您的身分為：一般會員";
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 HttpContext.Session.SetString("UserRole", "Admin"); // 記錄管理者角色
-                // TempData["message"] = "登入成功\n您的身分為：系統管理者";
                 return RedirectToAction("DashBoard", "Farmers");
             }
         }
