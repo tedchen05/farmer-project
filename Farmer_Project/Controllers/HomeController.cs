@@ -12,9 +12,9 @@ namespace Farmer_Project.Controllers
         private readonly AppDbContext _DbContext;
         private readonly IMemberService _memberService;
 
-        public HomeController(AppDbContext DbContext, IMemberService memberService)
+        public HomeController(AppDbContext DbContext, IMemberService memberService, EmailHelper emailHelper)
         {
-            _emailHelper = new EmailHelper();
+            _emailHelper = emailHelper;
             _DbContext = DbContext;
             _memberService = memberService;
         }

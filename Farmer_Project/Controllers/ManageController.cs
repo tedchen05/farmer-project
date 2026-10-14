@@ -1,7 +1,6 @@
-﻿using Farmer_Project.Models.Entity;
+﻿using Farmer_Project.Helpers;
+using Farmer_Project.Models.Entity;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Net.Mail;
 
 
 
@@ -11,12 +10,14 @@ namespace Farmer_Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _dbContext;
+        private readonly EmailHelper _emailHelper;
 
 
-        public ManageController(ILogger<HomeController> logger, AppDbContext dbContext)
+        public ManageController(ILogger<HomeController> logger, AppDbContext dbContext, EmailHelper emailHelper)
         {
             _logger = logger;
             _dbContext = dbContext;
+            _emailHelper = emailHelper;
         }
 
         [HttpGet]
@@ -124,60 +125,39 @@ namespace Farmer_Project.Controllers
             {
                 if (!string.IsNullOrEmpty(message))
                 {
-                    try
+                    TempData["messageBtn"] = true;
+
+                    var accounts = _dbContext.MemberInformations.Select(m => new { m.Account, m.NickName }).ToList();
+
+                    if (!accounts.Any())
                     {
-                        TempData["messageBtn"] = true;
-                        using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
-                        {
-                            smtpClient.Credentials = new NetworkCredential("a08265214@gmail.com", "muyl viyu lrtj ndoa");
-                            smtpClient.EnableSsl = true;
-
-                            // 修改為使用 memberInformation 表中的 account 字段
-                            var accounts = _dbContext.MemberInformations.Select(m => new { m.Account, m.NickName }).ToList();
-
-                            if (!accounts.Any())
-                            {
-                                ViewBag.LabelResult = "没有找到任何收件人地址！";
-                            }
-
-                            foreach (var account in accounts)
-                            {
-                                try
-                                {
-                                    using (MailMessage mail = new MailMessage())
-                                    {
-                                        mail.From = new MailAddress("a08265214@gmail.com");
-                                        mail.Subject = "小農平台優惠碼";
-                                        mail.Body = $@"
-                                        <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
-                                            <p>{account.NickName}您好，以下是我們小農平台的優惠碼：</p>
-                                            <p>{message}</p>
-                                            <p>如您有其他需求，可以隨時透過以下方式聯絡我們：</p>
-                                            <ul>
-                                                <li>客服信箱：lccent@gmail.com</li>
-                                                <li>聯絡電話：(02)2364-8885</li>
-                                                <li>聯絡地址：100台北市中正區羅斯福路三段272號3樓</li>
-                                            </ul>
-                                            <p>祝好，<br>小農分享平台服務團隊</p>
-                                        </div>";
-                                        mail.IsBodyHtml = true;
-                                        mail.To.Add(account.Account);
-
-                                        smtpClient.Send(mail);
-                                    }
-
-                                    TempData["LabelResult"] = "信件發送成功！";
-                                }
-                                catch (Exception innerEx)
-                                {
-                                    TempData["LabelResult"] = "信件發送失敗！錯誤信息：" + innerEx.Message;
-                                }
-                            }
-                        }
+                        ViewBag.LabelResult = "沒有找到任何收件人地址！";
                     }
-                    catch (Exception ex)
+
+                    foreach (var account in accounts)
                     {
-                        ViewBag.LabelResult = "信件發送成功：" + ex.Message;
+                        try
+                        {
+                            var body = $@"
+                            <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
+                                <p>{account.NickName}您好，以下是我們小農平台的優惠碼：</p>
+                                <p>{message}</p>
+                                <p>如您有其他需求，可以隨時透過以下方式聯絡我們：</p>
+                                <ul>
+                                    <li>客服信箱：lccent@gmail.com</li>
+                                    <li>聯絡電話：(02)2364-8885</li>
+                                    <li>聯絡地址：100台北市中正區羅斯福路三段272號3樓</li>
+                                </ul>
+                                <p>祝好，<br>小農分享平台服務團隊</p>
+                            </div>";
+
+                            _emailHelper.SendEmail(account.Account, "小農平台優惠碼", body);
+                            TempData["LabelResult"] = "信件發送成功！";
+                        }
+                        catch (Exception innerEx)
+                        {
+                            TempData["LabelResult"] = "信件發送失敗！錯誤信息：" + innerEx.Message;
+                        }
                     }
                 }
                 else

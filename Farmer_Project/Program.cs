@@ -14,6 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 註冊會員服務
 builder.Services.AddScoped<IMemberService, MemberService>();
 
+// 註冊寄信服務
+builder.Services.AddScoped<EmailHelper>();
+
 // 配置服務
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache(); // 用於存儲 Session
