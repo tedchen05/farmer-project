@@ -101,7 +101,7 @@ namespace Farmer_Project.Controllers
             else
             {
                 HttpContext.Session.SetString("UserRole", "Admin"); // 記錄管理者角色
-                return RedirectToAction("DashBoard", "Farmers");
+                return RedirectToAction("DashBoard", "Farmer");
             }
         }
 

@@ -1,8 +1,10 @@
+using Farmer_Project.Filters;
 using Farmer_Project.Services.Message;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
 {
+    [AdminOnly]
     public class MessageController : Controller
     {
         private readonly IMessageService _messageService;
@@ -22,7 +24,7 @@ namespace Farmer_Project.Controllers
             }
 
             TempData["messageBtn"] = true;
-            return RedirectToAction("DashBoard", "Farmers");
+            return RedirectToAction("DashBoard", "Farmer");
         }
     }
 }

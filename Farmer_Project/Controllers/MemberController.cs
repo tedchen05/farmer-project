@@ -1,9 +1,11 @@
 using Farmer_Project.Entities;
+using Farmer_Project.Filters;
 using Farmer_Project.Services.Member;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
 {
+    [AdminOnly]
     public class MemberController : Controller
     {
         private readonly IMemberService _memberService;
@@ -32,7 +34,7 @@ namespace Farmer_Project.Controllers
 
             TempData["Message"] = result.Message;
             TempData["dele"] = true;
-            return RedirectToAction("DashBoard", "Farmers");
+            return RedirectToAction("DashBoard", "Farmer");
         }
 
         // 會員搜尋
@@ -57,14 +59,14 @@ namespace Farmer_Project.Controllers
             };
 
             ViewBag.SearchTerm = searchTerm;
-            return View("~/Views/Farmers/DashBoard.cshtml", viewModel);
+            return View("~/Views/Farmer/DashBoard.cshtml", viewModel);
         }
 
         [HttpPost]
         public IActionResult ReloadData()
         {
             TempData["dele"] = true;
-            return RedirectToAction("DashBoard", "Farmers");
+            return RedirectToAction("DashBoard", "Farmer");
         }
 
         [HttpGet]
@@ -73,7 +75,7 @@ namespace Farmer_Project.Controllers
             var member = _memberService.GetById(id);
             if (member == null)
             {
-                return RedirectToAction("DashBoard", "Farmers", new { show = "memberTable" });
+                return RedirectToAction("DashBoard", "Farmer", new { show = "memberTable" });
             }
             return View(member);
         }
@@ -84,7 +86,7 @@ namespace Farmer_Project.Controllers
             var result = _memberService.Update(id, sort, nickName, account, passwd);
             TempData["Message"] = result.Message;
             TempData["dele"] = true;
-            return RedirectToAction("DashBoard", "Farmers");
+            return RedirectToAction("DashBoard", "Farmer");
         }
 
         [HttpPost]
@@ -92,7 +94,7 @@ namespace Farmer_Project.Controllers
         {
             _memberService.Delete(id);
             TempData["dele"] = true;
-            return RedirectToAction("DashBoard", "Farmers", new { show = "memberTable" });
+            return RedirectToAction("DashBoard", "Farmer", new { show = "memberTable" });
         }
     }
 }

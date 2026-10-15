@@ -7,14 +7,19 @@
     }
 </style>
 
-@model Farmer_Project.Entities.FarmersInfo
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="card shadow" style="width: 100%; max-width: 650px; padding: 20px;">
-        <form id="farmersForm" class="form" asp-action="/Farmers/FarmersInfoEdit" method="post" enctype="multipart/form-data">
+        <form id="farmersForm" action="/Farmer/FarmersInfoAdd" method="post" enctype="multipart/form-data">
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert @(ViewBag.Message.Contains("錯誤") ? "alert-danger" : "alert-info")" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
 
             <div class="bg_color py-2 rounded mb-4">
-                <h4 class="text-center mb-0">編輯小農資料</h4>
+                <h4 class="text-center mb-0">新增小農資料</h4>
             </div>
 
             <div class="mb-3">
@@ -30,7 +35,6 @@
             <div class="mb-3">
                 <label for="Image" class="form-label">小農圖片</label>
                 <input type="file" class="form-control" id="Image" name="Image">
-                <img src="@Model.Image" alt="Current Image" width="100" />
             </div>
 
             <div class="mb-3">
@@ -75,8 +79,8 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary me-2">儲存變更</button>
-                <a href="/Farmers/DashBoard?show=FarmersInfoTable" class="btn btn-secondary">返回</a>
+                <button type="submit" class="btn btn-primary me-2">送出</button>
+                <a href="/Farmer/DashBoard?show=FarmersInfoTable" class="btn btn-secondary">返回</a>
             </div>
         </form>
     </div>

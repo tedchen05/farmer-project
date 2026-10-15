@@ -151,7 +151,7 @@
                 <div id="FarmersInfoTable" class="container-fluid" style="display:none;">
                     <div class="d-flex justify-content-end p-3">
                         <div class="d-flex align-items-center">
-                            <form class="w-70 me-3 input-group" action="/Farmers/FarmersInfoSearch" method="get">
+                            <form class="w-70 me-3 input-group" action="/Farmer/FarmersInfoSearch" method="get">
                                 <input type="search" name="Search" class="form-control rounded-pill me-1" placeholder="Search..." aria-label="Search">
                                 <button class="btn border rounded-pill" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
@@ -163,7 +163,7 @@
                             <h2>小農資料</h2>
                         </div>
                         <div>
-                            <a href="/Farmers/FarmersInfoAdd" id="farmersCreate" class="btn btn-primary">新增成員</a>
+                            <a href="/Farmer/FarmersInfoAdd" id="farmersCreate" class="btn btn-primary">新增成員</a>
                         </div>
                     </div>
                     <hr />
@@ -194,8 +194,8 @@
                                         <td>@item.farmer.Phone</td>
                                         <td>@item.farmer.Email</td>
                                         <td class="d-flex">
-                                            <a href="/Farmers/FarmersInfoEdit/@item.farmer.FarmersId" class="btn btn-success me-2">編輯</a>
-                                            <form method="post" action="/Farmers/FarmersInfoDelete" onsubmit="return confirm('確認刪除這筆資料？ 此資料刪除會包含所屬文章一併刪除');">
+                                            <a href="/Farmer/FarmersInfoEdit/@item.farmer.FarmersId" class="btn btn-success me-2">編輯</a>
+                                            <form method="post" action="/Farmer/FarmersInfoDelete" onsubmit="return confirm('確認刪除這筆資料？ 此資料刪除會包含所屬文章一併刪除');">
                                                 <input type="hidden" name="DeleteFarmersId" value="@item.farmer.FarmersId" />
                                                 <button type="submit" class="btn btn-danger">刪除</button>
                                             </form>
@@ -227,7 +227,7 @@
                                 <div id="collapse_@(item.idx +1)" class="accordion-collapse collapse " aria-labelledby="heading_@(item.idx +1)" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div>
-                                            <a href="/Farmers/FarmersArtAdd/@item.farmer.FarmersId" id="FarmersArtAdd" class="btn btn-primary">新增文章</a>
+                                            <a href="/Article/FarmersArtAdd/@item.farmer.FarmersId" id="FarmersArtAdd" class="btn btn-primary">新增文章</a>
                                         </div>
 
                                         @{
@@ -260,8 +260,8 @@
                                                             <td style=" vertical-align: middle;">@article.CreatedDate</td>
 
                                                             <td class="d-flex" style="vertical-align: middle; align-items: center; height:130px">
-                                                                <a href="/Farmers/FarmersArtEdit/@article.ArticlesId" class="btn btn-success me-2">編輯</a>
-                                                                <form method="post" action="/Farmers/FarmersArtDelete" onsubmit="return confirm('確認刪除這筆資料？');">
+                                                                <a href="/Article/FarmersArtEdit/@article.ArticlesId" class="btn btn-success me-2">編輯</a>
+                                                                <form method="post" action="/Article/FarmersArtDelete" onsubmit="return confirm('確認刪除這筆資料？');">
                                                                     <input type="hidden" name="DeleteArticlesId" value="@article.ArticlesId" />
                                                                     <button type="submit" class="btn btn-danger">刪除</button>
                                                                 </form>
