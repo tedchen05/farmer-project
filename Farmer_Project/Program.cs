@@ -49,7 +49,6 @@ builder.Services.AddScoped<EmailHelper>();
 builder.Services.AddScoped<ImageHelper>();
 
 // 配置服務
-builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache(); // 用於存儲 Session
 builder.Services.AddSession(options =>
 {
@@ -64,13 +63,6 @@ builder.Services.AddHttpContextAccessor();
 
 // 構建應用程式
 var app = builder.Build();
-
-// 自動執行遷移與更新資料庫
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -15,11 +15,11 @@ namespace Farmer_Project.Helpers
         public EmailHelper(IConfiguration configuration)
         {
             var settings = configuration.GetSection("EmailSettings");
-            _smtpServer = settings["SmtpServer"];
-            _smtpPort = int.Parse(settings["Port"]);
-            _senderName = settings["SenderName"];
-            _senderEmail = settings["SenderEmail"];
-            _appPassword = settings["AppPassword"];
+            _smtpServer = settings["SmtpServer"] ?? string.Empty;
+            _smtpPort = int.Parse(settings["Port"] ?? "587");
+            _senderName = settings["SenderName"] ?? string.Empty;
+            _senderEmail = settings["SenderEmail"] ?? string.Empty;
+            _appPassword = settings["AppPassword"] ?? string.Empty;
         }
 
         // 寄送一封 Email

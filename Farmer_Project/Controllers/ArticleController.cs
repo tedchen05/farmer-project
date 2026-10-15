@@ -61,7 +61,7 @@ namespace Farmer_Project.Controllers
             var result = await _articleService.AddAsync(model, isPublish);
             if (!result.Success)
             {
-                ModelState.AddModelError(result.ErrorField, result.ErrorMessage);
+                ModelState.AddModelError(result.ErrorField!, result.ErrorMessage!);
                 return View(model);
             }
 
@@ -95,7 +95,7 @@ namespace Farmer_Project.Controllers
             }
             if (!result.Success)
             {
-                ModelState.AddModelError(result.ErrorField, result.ErrorMessage);
+                ModelState.AddModelError(result.ErrorField!, result.ErrorMessage!);
                 return View(model);
             }
 

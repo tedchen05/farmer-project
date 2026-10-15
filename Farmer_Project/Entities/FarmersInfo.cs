@@ -11,28 +11,28 @@ namespace Farmer_Project.Entities
 
         [StringLength(50)]
         [Required]
-        public string Name { set; get; }
+        public string Name { set; get; } = string.Empty;
 
         [StringLength(50)]
         [Required]
-        public string FarmName { set; get; }
+        public string FarmName { set; get; } = string.Empty;
 
         [StringLength(100)]
         [Required]
-        public string Image { set; get; }
+        public string Image { set; get; } = string.Empty;
 
         [StringLength(50)]
         [Required]
         [EmailAddress]
-        public string Email { set; get; }
+        public string Email { set; get; } = string.Empty;
 
         [StringLength(20)]
         [Required]
-        public string Phone { set; get; }
+        public string Phone { set; get; } = string.Empty;
 
         [StringLength(50)]
         [Required]
-        public string Address { set; get; }
+        public string Address { set; get; } = string.Empty;
 
         [StringLength(20)]
         public string CropsType { set; get; } = "未選擇";

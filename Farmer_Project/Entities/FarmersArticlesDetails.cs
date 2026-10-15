@@ -14,14 +14,14 @@ namespace Farmer_Project.Entities
         public int DetailId { set; get; }
 
         [MaxLength(100)]
-        public string SubTitle { get; set; }
+        public string SubTitle { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string SubImagePath { set; get; }
+        public string SubImagePath { set; get; } = string.Empty;
 
-        public string SubContent { set; get; }
+        public string SubContent { set; get; } = string.Empty;
 
         //導覽屬性(一對"多")
-        public virtual FarmersArticles FarmersArticles { get; set; }
+        public virtual FarmersArticles FarmersArticles { get; set; } = null!;
     }
 }
