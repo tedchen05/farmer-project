@@ -1,3 +1,4 @@
+using Farmer_Project.Common;
 using Farmer_Project.Models.Login;
 using Farmer_Project.Services.Login;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +66,7 @@ namespace Farmer_Project.Controllers
             var result = _loginService.CheckAccount(input.Account);
             if (result.Success)
             {
-                HttpContext.Session.SetString("ResetPwdUserId", input.Account);
+                HttpContext.Session.SetString(SessionKeys.ResetPwdUserId, input.Account);
                 TempData["message"] = result.Message;
                 return RedirectToAction("newPasswd");
             }
@@ -79,7 +80,7 @@ namespace Farmer_Project.Controllers
         {
             ViewData["BodyClass"] = "sub_page";
 
-            string account = HttpContext.Session.GetString("ResetPwdUserId") ?? string.Empty;
+            string account = HttpContext.Session.GetString(SessionKeys.ResetPwdUserId) ?? string.Empty;
             var result = _loginService.ChangePassword(account, input.Passwd, input.Passwd2);
             if (result.Success)
             {

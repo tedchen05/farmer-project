@@ -1,3 +1,4 @@
+using Farmer_Project.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -9,10 +10,10 @@ namespace Farmer_Project.Filters
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var session = context.HttpContext.Session;
-            var isLoggedIn = session.GetString("IsLoggedIn");
-            var userRole = session.GetString("UserRole");
+            var isLoggedIn = session.GetString(SessionKeys.IsLoggedIn);
+            var userRole = session.GetString(SessionKeys.UserRole);
 
-            if (isLoggedIn != "true" || userRole != "Admin")
+            if (isLoggedIn != "true" || userRole != UserRoles.Admin)
             {
                 context.Result = new RedirectToActionResult("Login", "Home", null);
             }

@@ -1,3 +1,4 @@
+using Farmer_Project.Common;
 using Farmer_Project.Filters;
 using Farmer_Project.Models.Article;
 using Farmer_Project.Services.Article;
@@ -56,7 +57,7 @@ namespace Farmer_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> FarmersArtAdd(FarmersArticlesViewModel model, string action)
         {
-            bool isPublish = action == "true";
+            bool isPublish = action == ArticleAction.Publish;
 
             var result = await _articleService.AddAsync(model, isPublish);
             if (!result.Success)
@@ -86,7 +87,7 @@ namespace Farmer_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> FarmersArtEdit(int id, FarmersArticlesViewModel model, string action)
         {
-            bool isPublish = action == "true";
+            bool isPublish = action == ArticleAction.Publish;
 
             var result = await _articleService.EditAsync(model, isPublish);
             if (result.NotFound)

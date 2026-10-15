@@ -1,4 +1,5 @@
-﻿using Farmer_Project.Models.Contact;
+﻿using Farmer_Project.Common;
+using Farmer_Project.Models.Contact;
 using Farmer_Project.Models.Login;
 using Farmer_Project.Services.Contact;
 using Farmer_Project.Services.Login;
@@ -91,16 +92,16 @@ namespace Farmer_Project.Controllers
                 return View();
             }
 
-            HttpContext.Session.SetString("IsLoggedIn", "true");
-            HttpContext.Session.SetString("UserName", member.Account);
+            HttpContext.Session.SetString(SessionKeys.IsLoggedIn, "true");
+            HttpContext.Session.SetString(SessionKeys.UserName, member.Account);
             if (result.Role == MemberRole.Member)
             {
-                HttpContext.Session.SetString("UserRole", "Member"); // 記錄用戶角色
+                HttpContext.Session.SetString(SessionKeys.UserRole, UserRoles.Member); // 記錄用戶角色
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                HttpContext.Session.SetString("UserRole", "Admin"); // 記錄管理者角色
+                HttpContext.Session.SetString(SessionKeys.UserRole, UserRoles.Admin); // 記錄管理者角色
                 return RedirectToAction("DashBoard", "Farmer");
             }
         }

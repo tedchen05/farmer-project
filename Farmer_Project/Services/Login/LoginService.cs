@@ -1,3 +1,4 @@
+using Farmer_Project.Common;
 using Farmer_Project.Entities;
 using Farmer_Project.Models.Login;
 using Farmer_Project.Repositories.Login;
@@ -31,7 +32,7 @@ namespace Farmer_Project.Services.Login
             return new LoginResult
             {
                 Status = LoginStatus.Success,
-                Role = member.Sort == "1" ? MemberRole.Admin : MemberRole.Member
+                Role = member.Sort == MemberSort.Admin ? MemberRole.Admin : MemberRole.Member
             };
         }
 

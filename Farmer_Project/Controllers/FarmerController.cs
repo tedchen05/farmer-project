@@ -1,3 +1,4 @@
+using Farmer_Project.Common;
 using Farmer_Project.Entities;
 using Farmer_Project.Filters;
 using Farmer_Project.Services.Farmer;
@@ -62,7 +63,7 @@ namespace Farmer_Project.Controllers
         [AdminOnly]
         public IActionResult LogOut()
         {
-            HttpContext.Session.Remove("IsLoggedIn");
+            HttpContext.Session.Remove(SessionKeys.IsLoggedIn);
             return RedirectToAction("Index", "Home");
         }
 
