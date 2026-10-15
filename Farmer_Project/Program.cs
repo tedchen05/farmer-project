@@ -1,5 +1,6 @@
 using Farmer_Project.Helpers;
 using Farmer_Project.Repositories.Login;
+using Farmer_Project.Services.Contact;
 using Farmer_Project.Repositories.Member;
 using Farmer_Project.Services.Login;
 using Farmer_Project.Services.Member;
@@ -27,6 +28,9 @@ builder.Services.AddScoped<IMemberService, MemberService>();
 
 // 註冊訊息服務
 builder.Services.AddScoped<IMessageService, MessageService>();
+
+// 註冊聯絡我們服務
+builder.Services.AddScoped<IContactService, ContactService>();
 
 // 註冊寄信服務
 builder.Services.AddScoped<EmailHelper>();
