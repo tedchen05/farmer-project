@@ -34,10 +34,12 @@
 @*以下為回傳訊息的必須指令*@
 @if (TempData["message"] != null)
 {
-    <script type="text/javascript">
-        var message = @Html.Raw(Json.Serialize(TempData["message"]));
-        @* 專案類型"ASP.NET CORE WEB 應用程式(MVC)" 的用Json.Serialize; "ASP.NET WEB 應用程式(.NET Framework)" 的用Json.Encode *@
-        alert(message);
-    </script>
 }
 
+@section Scripts {
+<script type="text/javascript">
+        var message = @Html.Raw(Json.Serialize(TempData["message"]));
+        @* 專案類型"ASP.NET CORE WEB 應用程式(MVC)" 的用Json.Serialize; "ASP.NET WEB 應用程式(.NET Framework)" 的用Json.Encode *@
+        if (message) { alert(message); }
+    </script>
+}

@@ -1,0 +1,19 @@
+img {
+    padding: 0;
+    margin: 0;
+}
+
+.farmer_photo {
+    border-radius: 50%;
+}
+
+/* 地圖容器與 iframe 填滿 */
+.map-container {
+    height: 100%;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

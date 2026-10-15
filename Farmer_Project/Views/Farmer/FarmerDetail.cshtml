@@ -4,28 +4,6 @@
 @using Farmer_Project.Entities
 @model FarmersArticles
 
-<style>
-    img {
-        padding: 0;
-        margin: 0;
-    }
-
-    farmer_photo {
-        bprder-radius: 50%;
-    }
-    /* 設定地圖容器的最小高度，讓地圖高度和容器一致 */
-    .map-container {
-        height: 100%;
-    }
-
-        /* 讓 iframe 填滿地圖容器 */
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-</style>
 
 @{
     var subArticle = Model.FarmersArticlesDetails;
@@ -61,7 +39,7 @@
 
             <!-- Google Maps -->
             <div class="col-lg-6 ">
-                <div class="map-container pr-3 pb-3">
+                <div class="map-container pe-3 pb-3">
                     <iframe src="https://www.google.com/maps?q=@Model.FarmersInfo.Address&output=embed"
                             frameborder="0"
                             style="border:0">
@@ -77,3 +55,7 @@
 
 
 
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/farmerDetail.css" />
+}

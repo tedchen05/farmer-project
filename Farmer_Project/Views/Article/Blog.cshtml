@@ -4,32 +4,6 @@
 @using Farmer_Project.Entities
 @model List<FarmersArticles>
 
-<style>
-    .cus_hover {
-        transition: all 0.3s ease;
-    }
-
-    .cus_hover:hover {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        transform: translateY(-5px);
-    }
-    .cus_bg_color {
-        background-color: #D9EFEA;
-    }
-
-    .rounded {
-        border-radius: 30px;
-    }
-
-    .cus_aText_hover {
-        font-weight: bold;
-        transition: color 0.3s ease;
-    }
-
-    .cus_aText_hover:hover {
-        color: #E89C33;
-    }
-</style>
 
 
 <section class="fruit_section layout_padding">
@@ -95,3 +69,7 @@
         </div>
     </div>
 </section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/blog.css" />
+}

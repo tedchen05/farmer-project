@@ -1,23 +1,9 @@
 ﻿@model Farmer_Project.Entities.FarmersAndMembersViewModel
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+    ViewData["Title"] = "後台管理系統";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>後臺管理系統</title>
-    <!--bootstrap css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    
-    <!--font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!--customer css-->
-    <link href="/css/sidebars.css" rel="stylesheet" />
-</head>
-<body>
     <header class="py-3 mb-3 border-bottom">
         <center><h1 class="text-center">後台管理系統</h1></center>
     </header>
@@ -288,19 +274,7 @@
             </div>
             
         </div>
-       
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-        <!-- customer js -->
-        <script src="/js/manage.js"></script>
-        <script type="text/javascript">
-            document.getElementById('logoutBtn').addEventListener('click', function() {
-                // 顯示確認對話框
-                if (confirm("確定要登出嗎？")) {
-                    // 如果用戶選擇"確定"，提交表單
-                    document.getElementById('logoutForm').submit();
-                }
-            });
-        </script>
-    </body>
-</html>
+@section Scripts {
+    <script src="~/js/manage.js"></script>
+}
