@@ -1,32 +1,25 @@
 ﻿<!DOCTYPE html>
-<html>
-<head>
-    <!-- 基本設定 -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>@ViewData["Title"]小農分享平台</title>
+<html lang="zh-Hant">
 
-    <!-- 样式表 -->
-    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap" />
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="小農分享平台後台管理系統。" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " - " : "")小農分享平台後台</title>
+
+    @await Html.PartialAsync("_Styles")
     <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/responsive.css" />
+    <link rel="stylesheet" href="~/css/sidebars.css" />
 </head>
+
 <body>
-    <!-- 主體內容 -->
     <main>
         @RenderBody()
     </main>
 
-
-    <!-- 腳本 -->
-    <script src="~/js/jquery-3.4.1.min.js"></script>
-    <script src="~/js/bootstrap.js"></script>
-    <script src="~/js/custom.js"></script>
+    @await Html.PartialAsync("_Scripts")
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>
