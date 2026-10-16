@@ -15,7 +15,7 @@ namespace Farmer_Project.Filters
 
             if (isLoggedIn != "true" || userRole != UserRoles.Admin)
             {
-                context.Result = new RedirectToActionResult("Login", "Home", null);
+                context.Result = new RedirectToActionResult("Login", "Account", null);
             }
         }
     }

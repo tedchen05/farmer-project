@@ -60,14 +60,14 @@
                                 {
                                     <select class="dropdown-btn" onchange="window.location.href=this.value;">
                                         <option value="#" disabled selected>會員專區</option>
-                                        <option value="@Url.Action("reviseAccount", "Login")">會員修改</option>
-                                        <option value="@Url.Action("Logout1", "Home")">登出</option>
+                                        <option value="@Url.Action("reviseAccount", "Account")">會員修改</option>
+                                        <option value="@Url.Action("Logout1", "Account")">登出</option>
                                     </select>
                                 }
                                 else
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link" href="@Url.Action("login", "Home")">登入</a>
+                                        <a class="nav-link" href="@Url.Action("Login", "Account")">登入</a>
                                     </li>
                                 }
                             </ul>

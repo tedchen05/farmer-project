@@ -4,59 +4,6 @@
     ViewData["Title"] = "後台管理系統";
 }
 
-    <header class="py-3 mb-3 border-bottom">
-        <center><h1 class="text-center">後台管理系統</h1></center>
-    </header>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- 左側欄(功能列) -->
-            <div class="col-md-3 flex-shrink-0 p-3 text-white bg-white shadow" style="width: 280px; margin-right: 20px;">
-                <div class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-                    <svg class="bi me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-                    <span class="fs-5 fw-semibold" style="color: black; font-size: 20px; font-weight: bold;">
-                        小農分享平台
-                    </span>
-                </div>
-                <ul class="list-unstyled ps-0">
-                    <li class="mb-1">
-                        <button class="btn align-items-center rounded" id="showActions">
-                            會員管理
-                        </button>
-                    </li>
-                    <li class="mb-1">
-                        <button class="btn align-items-center rounded" id="messageBtn">
-                            訊息發送
-                        </button>
-                    </li>
-                        <li class="mb-1">
-                        <button class="btn align-items-center rounded" id="FarmersInfo">
-                            小農資料
-                        </button>
-                    <li class="mb-1">
-                        <button class="btn align-items-center rounded" id="FarmersArticle">
-                            小農文章
-                        </button>
-                    </li>
-                    <li class="border-top my-3"></li>
-                    <li class="mb-1">
-                        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false" id="logoutBtn">
-                            登出
-                        </button>
-                        <form action="@Url.Action("Logout", "Home")" method="post" id="logoutForm" style="display:none;">
-                                @* POST 方法發送登出請求 *@
-                        </form>
-                        <div class="collapse" id="account-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- 右側欄(內容區域) -->
-            <!-- 其他內容 -->
-            <div class="col p-3 shadow">
             @* <div id="messageForm" style="@((TempData["messageBtn"] != null && (bool)TempData["messageBtn"]) ? "display:block;" : "display:none;")">  舊的程式碼*@
                 <div id="messageForm" style="@((TempData["messageBtn"] as bool? ?? false) ? "display:block;" : "display:none;")">
 
@@ -269,12 +216,3 @@
                             </div>
                         </div>
                     }
-                </div>
-             
-            </div>
-            
-        </div>
-
-@section Scripts {
-    <script src="~/js/manage.js"></script>
-}

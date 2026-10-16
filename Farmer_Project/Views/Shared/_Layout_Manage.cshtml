@@ -16,11 +16,24 @@
 </head>
 
 <body>
-    <main>
-        @RenderBody()
-    </main>
+    <header class="py-3 mb-3 border-bottom">
+        <h1 class="text-center">後台管理系統</h1>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            @await Html.PartialAsync("_Sidebar")
+
+            <div class="col p-3 shadow">
+                <main>
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
 
     @await Html.PartialAsync("_Scripts")
+    <script src="~/js/manage.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 
