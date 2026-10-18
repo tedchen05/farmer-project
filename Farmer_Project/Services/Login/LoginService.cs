@@ -44,11 +44,6 @@ namespace Farmer_Project.Services.Login
                 return OperationResult.Fail(MemberField.None, "請填寫所有欄位。");
             }
 
-            if (!IsEmail(input.Account))
-            {
-                return OperationResult.Fail(MemberField.Account, "帳號請輸入完整的電子信箱帳號");
-            }
-
             if (input.Passwd.Length < 8 || input.Passwd.Length > 12)
             {
                 return OperationResult.Fail(MemberField.Passwd, "密碼需要8~12位數的符號");
@@ -78,11 +73,6 @@ namespace Farmer_Project.Services.Login
             if (string.IsNullOrEmpty(account))
             {
                 return OperationResult.Fail(MemberField.None, "請填寫所有欄位。");
-            }
-
-            if (!IsEmail(account))
-            {
-                return OperationResult.Fail(MemberField.Account, "帳號輸入錯誤");
             }
 
             if (!_loginRepository.ExistsByAccount(account))
@@ -135,12 +125,6 @@ namespace Farmer_Project.Services.Login
             member.Passwd = passwd;
             _loginRepository.Save();
             return OperationResult.Ok("資料更新成功");
-        }
-
-        // 簡易email格式判斷
-        private bool IsEmail(string account)
-        {
-            return account.Contains(".com");
         }
     }
 }

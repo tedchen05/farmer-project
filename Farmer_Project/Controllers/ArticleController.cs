@@ -1,5 +1,5 @@
 using Farmer_Project.Common;
-using Farmer_Project.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Farmer_Project.Models.Article;
 using Farmer_Project.Services.Article;
 using Farmer_Project.Services.Farmer;
@@ -19,7 +19,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 後台文章列表
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -51,7 +51,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 新增文章
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult FarmersArtAdd(int id)
         {
@@ -65,7 +65,7 @@ namespace Farmer_Project.Controllers
             return View(viewModel);
         }
 
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> FarmersArtAdd(FarmersArticlesViewModel model, string action)
         {
@@ -82,7 +82,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 編輯文章
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult FarmersArtEdit(int id)
         {
@@ -95,7 +95,7 @@ namespace Farmer_Project.Controllers
             return View(viewModel);
         }
 
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> FarmersArtEdit(int id, FarmersArticlesViewModel model, string action)
         {
@@ -116,7 +116,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 刪除文章
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult FarmersArtDelete(int DeleteArticlesId)
         {

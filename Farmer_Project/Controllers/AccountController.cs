@@ -1,7 +1,10 @@
 using Farmer_Project.Common;
 using Farmer_Project.Models.Login;
 using Farmer_Project.Services.Login;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Farmer_Project.Controllers
 {
@@ -22,7 +25,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginInput member)
+        public async Task<IActionResult> Login(LoginInput member)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -47,33 +50,37 @@ namespace Farmer_Project.Controllers
                 return View(member);
             }
 
-            HttpContext.Session.SetString(SessionKeys.IsLoggedIn, "true");
-            HttpContext.Session.SetString(SessionKeys.UserName, member.Account);
-            if (result.Role == MemberRole.Member)
+            // 建立驗證票證
+            string role = result.Role == MemberRole.Admin ? UserRoles.Admin : UserRoles.Member;
+            var claims = new List<Claim>
             {
-                HttpContext.Session.SetString(SessionKeys.UserRole, UserRoles.Member); // 記錄用戶角色
-                return RedirectToAction("Index", "Home");
-            }
-            else
+                new Claim(ClaimTypes.Name, member.Account),
+                new Claim(ClaimTypes.Role, role)
+            };
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+            if (result.Role == MemberRole.Admin)
             {
-                HttpContext.Session.SetString(SessionKeys.UserRole, UserRoles.Admin); // 記錄管理者角色
                 return RedirectToAction("Index", "Member");
             }
+
+            return RedirectToAction("Index", "Home");
         }
 
         // 後台登出
         [HttpPost]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
 
         // 一般會員登出
         [HttpGet]
-        public IActionResult Logout1()
+        public async Task<IActionResult> Logout1()
         {
-            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
 
@@ -101,7 +108,7 @@ namespace Farmer_Project.Controllers
         // 會員資料修改頁
         public IActionResult ReviseAccount()
         {
-            string account = HttpContext.Session.GetString(SessionKeys.UserName) ?? string.Empty;
+            string account = User.Identity?.Name ?? string.Empty;
             if (string.IsNullOrEmpty(account))
             {
                 return RedirectToAction("Login");
@@ -179,7 +186,7 @@ namespace Farmer_Project.Controllers
         [HttpPost]
         public IActionResult ReviseAccount(ReviseAccountInput input)
         {
-            string account = HttpContext.Session.GetString(SessionKeys.UserName) ?? string.Empty;
+            string account = User.Identity?.Name ?? string.Empty;
             if (string.IsNullOrEmpty(account))
             {
                 return RedirectToAction("Login");

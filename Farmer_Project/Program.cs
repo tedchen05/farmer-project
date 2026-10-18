@@ -9,6 +9,7 @@ using Farmer_Project.Services.Farmer;
 using Farmer_Project.Services.Login;
 using Farmer_Project.Services.Member;
 using Farmer_Project.Services.Message;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -65,6 +66,15 @@ builder.Services.AddSession(options =>
 // 添加 HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
+// 設定 Cookie 驗證, 未登入或無權限導回登入頁
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    });
+
 
 // 構建應用程式
 var app = builder.Build();
@@ -84,6 +94,7 @@ app.UseStaticFiles();
 app.UseSession(); // 啟用 Session
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

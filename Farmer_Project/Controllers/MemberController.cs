@@ -1,11 +1,11 @@
 using Farmer_Project.Entities;
-using Farmer_Project.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Farmer_Project.Services.Member;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
 {
-    [AdminOnly]
+    [Authorize(Roles = "Admin")]
     public class MemberController : Controller
     {
         private readonly IMemberService _memberService;

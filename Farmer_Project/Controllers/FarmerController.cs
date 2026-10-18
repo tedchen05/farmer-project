@@ -1,5 +1,5 @@
 using Farmer_Project.Entities;
-using Farmer_Project.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Farmer_Project.Services.Farmer;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,7 +51,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 後台小農列表
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -60,7 +60,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 小農搜尋
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult FarmersInfoSearch(string Search)
         {
@@ -69,14 +69,14 @@ namespace Farmer_Project.Controllers
         }
 
         // 新增小農
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult FarmersInfoAdd()
         {
             return View(new FarmersInfo());
         }
 
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> FarmersInfoAdd(FarmersInfo farmersInfo, IFormFile? image)
         {
@@ -93,7 +93,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 修改小農
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult FarmersInfoEdit(int id)
         {
@@ -111,7 +111,7 @@ namespace Farmer_Project.Controllers
             return View(farmer);
         }
 
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> FarmersInfoEdit(int id, FarmersInfo model, IFormFile? image)
         {
@@ -128,7 +128,7 @@ namespace Farmer_Project.Controllers
         }
 
         // 刪除小農
-        [AdminOnly]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult FarmersInfoDelete(int DeleteFarmersId)
         {

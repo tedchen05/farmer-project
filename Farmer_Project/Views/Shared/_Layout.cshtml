@@ -56,7 +56,7 @@
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto">
-                                @if (Context.Session.GetString("IsLoggedIn") == "true")
+                                @if (User.Identity != null && User.Identity.IsAuthenticated)
                                 {
                                     <select class="dropdown-btn" onchange="window.location.href=this.value;">
                                         <option value="#" disabled selected>會員專區</option>

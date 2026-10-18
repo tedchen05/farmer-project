@@ -1,10 +1,10 @@
-using Farmer_Project.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Farmer_Project.Services.Message;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
 {
-    [AdminOnly]
+    [Authorize(Roles = "Admin")]
     public class MessageController : Controller
     {
         private readonly IMessageService _messageService;

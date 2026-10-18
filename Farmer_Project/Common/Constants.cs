@@ -3,13 +3,10 @@ namespace Farmer_Project.Common
     // Session 鍵名
     public static class SessionKeys
     {
-        public const string IsLoggedIn = "IsLoggedIn";
-        public const string UserName = "UserName";
-        public const string UserRole = "UserRole";
         public const string ResetPwdUserId = "ResetPwdUserId";
     }
 
-    // 使用者角色(存於 Session)
+    // 使用者角色
     public static class UserRoles
     {
         public const string Admin = "Admin";
