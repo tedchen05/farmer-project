@@ -1,39 +1,32 @@
-﻿@* 最上面的版面配置 *@
+﻿@model Farmer_Project.Models.Login.ForgetPasswordInput
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<!-- nav section -->
-
 
 <div class="container">
     <form method="post" action="/Account/ResetPasswd">
         <br />
         <h2>密碼重設</h2>
         <br />
-        <label>會員帳號</label>
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <label asp-for="Account">會員帳號</label>
         <br />
-        <input type="text" id="inputUserAccount" name="account" required class="form-control" placeholder="輸入您的電子信箱" />
-        <div>
-            <span style="color:red">@ViewBag.Msg1</span>
-        </div>
+        <input asp-for="Account" class="form-control" placeholder="輸入您的電子信箱" />
+        <span asp-validation-for="Account" class="text-danger"></span>
         <br /><br />
+
         <input type="submit" name="submit" value="確認帳號" class="btn btn-primary" />
-        <br />
-        <br />
+        <br /><br />
     </form>
 </div>
 
-
-@*以下為回傳訊息的必須指令*@
-@if (TempData["message"] != null)
-{
-}
-
 @section Scripts {
-<script type="text/javascript">
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script type="text/javascript">
         var message = @Html.Raw(Json.Serialize(TempData["message"]));
-        @* 專案類型"ASP.NET CORE WEB 應用程式(MVC)" 的用Json.Serialize; "ASP.NET WEB 應用程式(.NET Framework)" 的用Json.Encode *@
         if (message) { alert(message); }
     </script>
 }

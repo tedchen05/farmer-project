@@ -18,7 +18,7 @@ namespace Farmer_Project.Controllers
         public IActionResult Login()
         {
             ViewData["BodyClass"] = "sub_page";
-            return View();
+            return View(new LoginInput());
         }
 
         [HttpPost]
@@ -26,36 +26,27 @@ namespace Farmer_Project.Controllers
         {
             ViewData["BodyClass"] = "sub_page";
 
-            // 驗證表單是否完整
-            if (string.IsNullOrEmpty(member.Account) || string.IsNullOrEmpty(member.Passwd))
+            if (!ModelState.IsValid)
             {
-                TempData["dele"] = true;
-                ViewBag.Message = "請填寫所有欄位。";
-                return View();
+                return View(member);
             }
+
             Response.Cookies.Append("UserAccount", member.Account, new CookieOptions { Expires = DateTimeOffset.Now.AddHours(1) });
 
             var result = _loginService.Login(member.Account, member.Passwd); // 帳號驗證
 
-            // 檢查帳號格式
-            if (!member.Account.Contains(".com"))
-            {
-                ViewBag.Msg2 = "帳號格式輸入錯誤";
-                return View();
-            }
-
             // 檢查帳號是否存在
             if (result.Status == LoginStatus.AccountNotFound)
             {
-                ViewBag.Msg3 = "這個帳號不存在";
-                return View();
+                ModelState.AddModelError(nameof(member.Account), "這個帳號不存在");
+                return View(member);
             }
 
             // 檢查密碼錯誤
             if (result.Status == LoginStatus.WrongPassword)
             {
-                ViewBag.Msg4 = "密碼輸入錯誤";
-                return View();
+                ModelState.AddModelError(nameof(member.Passwd), "密碼輸入錯誤");
+                return View(member);
             }
 
             HttpContext.Session.SetString(SessionKeys.IsLoggedIn, "true");
@@ -92,21 +83,21 @@ namespace Farmer_Project.Controllers
         public IActionResult ResetPasswd()
         {
             ViewData["BodyClass"] = "sub_page";
-            return View();
+            return View(new ForgetPasswordInput());
         }
 
         // 重設密碼頁
         public IActionResult NewPasswd()
         {
             ViewData["BodyClass"] = "sub_page";
-            return View();
+            return View(new NewPasswordInput());
         }
 
         // 註冊頁
         public IActionResult Register()
         {
             ViewData["BodyClass"] = "sub_page";
-            return View();
+            return View(new RegisterInput());
         }
 
         // 會員資料修改頁
@@ -121,6 +112,11 @@ namespace Farmer_Project.Controllers
         {
             ViewData["BodyClass"] = "sub_page";
 
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
+
             var result = _loginService.Register(input);
             if (result.Success)
             {
@@ -129,13 +125,18 @@ namespace Farmer_Project.Controllers
             }
 
             ApplyError(result);
-            return View();
+            return View(input);
         }
 
         [HttpPost]
         public IActionResult ResetPasswd(ForgetPasswordInput input)
         {
             ViewData["BodyClass"] = "sub_page";
+
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
 
             var result = _loginService.CheckAccount(input.Account);
             if (result.Success)
@@ -145,14 +146,19 @@ namespace Farmer_Project.Controllers
                 return RedirectToAction("NewPasswd");
             }
 
-            ApplySingleError(result);
-            return View();
+            ApplyError(result);
+            return View(input);
         }
 
         [HttpPost]
-        public IActionResult NewPasswd(ForgetPasswordInput input)
+        public IActionResult NewPasswd(NewPasswordInput input)
         {
             ViewData["BodyClass"] = "sub_page";
+
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
 
             string account = HttpContext.Session.GetString(SessionKeys.ResetPwdUserId) ?? string.Empty;
             var result = _loginService.ChangePassword(account, input.Passwd, input.Passwd2);
@@ -162,8 +168,8 @@ namespace Farmer_Project.Controllers
                 return RedirectToAction("Login");
             }
 
-            ApplySingleError(result);
-            return View();
+            ApplyError(result);
+            return View(input);
         }
 
         [HttpPost]
@@ -174,38 +180,24 @@ namespace Farmer_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // 將錯誤對應到註冊頁的各欄位訊息
+        // 將服務回傳的錯誤對應到對應欄位的 ModelState
         private void ApplyError(OperationResult result)
         {
+            string message = result.Message ?? string.Empty;
             switch (result.Field)
             {
                 case MemberField.NickName:
-                    ViewBag.Msg1 = result.Message;
+                    ModelState.AddModelError("NickName", message);
                     break;
                 case MemberField.Account:
-                    ViewBag.Msg2 = result.Message;
+                    ModelState.AddModelError("Account", message);
                     break;
                 case MemberField.Passwd:
-                    ViewBag.Msg3 = result.Message;
+                    ModelState.AddModelError("Passwd", message);
                     break;
                 default:
-                    TempData["dele"] = true;
-                    ViewBag.Message = result.Message;
+                    ModelState.AddModelError(string.Empty, message);
                     break;
-            }
-        }
-
-        // 忘記密碼/重設密碼頁只有單一錯誤訊息位置
-        private void ApplySingleError(OperationResult result)
-        {
-            if (result.Field == MemberField.None)
-            {
-                TempData["dele"] = true;
-                ViewBag.Message = result.Message;
-            }
-            else
-            {
-                ViewBag.Msg1 = result.Message;
             }
         }
     }
