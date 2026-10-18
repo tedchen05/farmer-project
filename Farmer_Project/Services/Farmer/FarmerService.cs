@@ -4,6 +4,7 @@ using Farmer_Project.Models.Farmer;
 using Farmer_Project.Repositories.Article;
 using Farmer_Project.Repositories.Farmer;
 using Farmer_Project.Repositories.Member;
+using Microsoft.Extensions.Logging;
 
 namespace Farmer_Project.Services.Farmer
 {
@@ -13,60 +14,63 @@ namespace Farmer_Project.Services.Farmer
         private readonly IArticleRepository _articleRepository;
         private readonly IMemberRepository _memberRepository;
         private readonly ImageHelper _imageHelper;
+        private readonly ILogger<FarmerService> _logger;
 
         public FarmerService(IFarmerRepository farmerRepository,
                              IArticleRepository articleRepository,
                              IMemberRepository memberRepository,
-                             ImageHelper imageHelper)
+                             ImageHelper imageHelper,
+                             ILogger<FarmerService> logger)
         {
             _farmerRepository = farmerRepository;
             _articleRepository = articleRepository;
             _memberRepository = memberRepository;
             _imageHelper = imageHelper;
+            _logger = logger;
         }
 
         // 後台主頁資料(小農 + 會員)
-        public FarmersAndMembersViewModel GetDashboard()
+        public async Task<FarmersAndMembersViewModel> GetDashboardAsync()
         {
             return new FarmersAndMembersViewModel
             {
-                FarmersInfos = _farmerRepository.GetAllWithArticles(),
-                MemberInformations = _memberRepository.GetAll()
+                FarmersInfos = await _farmerRepository.GetAllWithArticlesAsync(),
+                MemberInformations = await _memberRepository.GetAllAsync()
             };
         }
 
         // 小農搜尋，空字串回傳全部
-        public FarmersAndMembersViewModel Search(string search)
+        public async Task<FarmersAndMembersViewModel> SearchAsync(string search)
         {
             var viewModel = new FarmersAndMembersViewModel();
 
             if (string.IsNullOrEmpty(search))
             {
-                viewModel.FarmersInfos = _farmerRepository.GetAllWithArticles();
+                viewModel.FarmersInfos = await _farmerRepository.GetAllWithArticlesAsync();
                 return viewModel;
             }
 
             var transSearch = TransDictionary(search);
-            viewModel.FarmersInfos = _farmerRepository.Search(search, transSearch);
+            viewModel.FarmersInfos = await _farmerRepository.SearchAsync(search, transSearch);
             return viewModel;
         }
 
         // 某作物類型的小農介紹文章
-        public List<FarmersArticles> GetFarmerIntros(string cropsType)
+        public async Task<List<FarmersArticles>> GetFarmerIntrosAsync(string cropsType)
         {
-            return _articleRepository.GetFarmerIntros(cropsType);
+            return await _articleRepository.GetFarmerIntrosAsync(cropsType);
         }
 
         // 小農故事(單篇已發佈文章)
-        public FarmersArticles? GetFarmerStory(int farmersId, int articlesId)
+        public async Task<FarmersArticles?> GetFarmerStoryAsync(int farmersId, int articlesId)
         {
-            return _articleRepository.GetPublishedArticle(farmersId, articlesId);
+            return await _articleRepository.GetPublishedArticleAsync(farmersId, articlesId);
         }
 
         // 依Id取得小農
-        public FarmersInfo? GetById(int id)
+        public async Task<FarmersInfo?> GetByIdAsync(int id)
         {
-            return _farmerRepository.GetById(id);
+            return await _farmerRepository.GetByIdAsync(id);
         }
 
         // 新增小農
@@ -94,14 +98,15 @@ namespace Farmer_Project.Services.Farmer
                 }
 
                 _farmerRepository.Add(farmer);
-                _farmerRepository.Save();
+                await _farmerRepository.SaveAsync();
 
                 result.Success = true;
                 result.Message = "資料儲存成功！";
                 return result;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "新增小農資料失敗, 農場名: {FarmName}", farmer.FarmName);
                 result.Success = false;
                 result.Message = "農場名或 Email已有資料，請更換！";
                 return result;
@@ -115,7 +120,7 @@ namespace Farmer_Project.Services.Farmer
 
             if (id != 0)
             {
-                var farmer = _farmerRepository.GetById(id);
+                var farmer = await _farmerRepository.GetByIdAsync(id);
                 if (farmer == null)
                 {
                     result.Success = false;
@@ -144,7 +149,7 @@ namespace Farmer_Project.Services.Farmer
                 farmer.CropsType = model.CropsType;
                 farmer.PlantType = model.PlantType;
 
-                _farmerRepository.Save();
+                await _farmerRepository.SaveAsync();
             }
 
             result.Success = true;
@@ -152,16 +157,16 @@ namespace Farmer_Project.Services.Farmer
         }
 
         // 刪除小農，找不到回傳false
-        public bool Delete(int deleteFarmersId)
+        public async Task<bool> DeleteAsync(int deleteFarmersId)
         {
-            var farmer = _farmerRepository.GetById(deleteFarmersId);
+            var farmer = await _farmerRepository.GetByIdAsync(deleteFarmersId);
             if (farmer == null)
             {
                 return false;
             }
 
             _farmerRepository.Remove(farmer);
-            _farmerRepository.Save();
+            await _farmerRepository.SaveAsync();
             return true;
         }
 

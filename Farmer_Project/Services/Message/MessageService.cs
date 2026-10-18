@@ -1,6 +1,7 @@
 using Farmer_Project.Helpers;
 using Farmer_Project.Models.Message;
 using Farmer_Project.Repositories.Member;
+using Microsoft.Extensions.Logging;
 
 namespace Farmer_Project.Services.Message
 {
@@ -8,22 +9,24 @@ namespace Farmer_Project.Services.Message
     {
         private readonly IMemberRepository _memberRepository;
         private readonly EmailHelper _emailHelper;
+        private readonly ILogger<MessageService> _logger;
 
-        public MessageService(IMemberRepository memberRepository, EmailHelper emailHelper)
+        public MessageService(IMemberRepository memberRepository, EmailHelper emailHelper, ILogger<MessageService> logger)
         {
             _memberRepository = memberRepository;
             _emailHelper = emailHelper;
+            _logger = logger;
         }
 
         // 寄送優惠碼給所有會員
-        public MessageResult SendPromoToAll(string message)
+        public async Task<MessageResult> SendPromoToAllAsync(string message)
         {
             if (string.IsNullOrEmpty(message))
             {
                 return new MessageResult { Message = "請輸入有效的訊息內容！" };
             }
 
-            var members = _memberRepository.GetAll();
+            var members = await _memberRepository.GetAllAsync();
             if (members.Count == 0)
             {
                 return new MessageResult { Message = "沒有找到任何收件人地址！" };
@@ -51,6 +54,7 @@ namespace Farmer_Project.Services.Message
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, "寄送優惠信失敗, 收件者: {Account}", member.Account);
                     result.Message = "信件發送失敗！錯誤信息：" + ex.Message;
                 }
             }

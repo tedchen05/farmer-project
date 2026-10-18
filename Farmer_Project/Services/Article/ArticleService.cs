@@ -17,21 +17,21 @@ namespace Farmer_Project.Services.Article
         }
 
         // 部落格文章清單
-        public List<FarmersArticles> GetBlog(string? cropsType)
+        public async Task<List<FarmersArticles>> GetBlogAsync(string? cropsType)
         {
-            return _articleRepository.GetBlog(cropsType);
+            return await _articleRepository.GetBlogAsync(cropsType);
         }
 
         // 單篇部落格文章
-        public FarmersArticles? GetArticle(int farmersId, int articlesId)
+        public async Task<FarmersArticles?> GetArticleAsync(int farmersId, int articlesId)
         {
-            return _articleRepository.GetPublishedArticle(farmersId, articlesId);
+            return await _articleRepository.GetPublishedArticleAsync(farmersId, articlesId);
         }
 
         // 組編輯用的表單資料，查無回傳null
-        public FarmersArticlesViewModel? BuildEditModel(int id)
+        public async Task<FarmersArticlesViewModel?> BuildEditModelAsync(int id)
         {
-            var article = _articleRepository.GetByIdWithDetails(id);
+            var article = await _articleRepository.GetByIdWithDetailsAsync(id);
             if (article == null)
             {
                 return null;
@@ -91,7 +91,7 @@ namespace Farmer_Project.Services.Article
             };
 
             _articleRepository.AddArticle(articleEntity);
-            _articleRepository.Save();
+            await _articleRepository.SaveAsync();
             var articleID = articleEntity.ArticlesId;
 
             // 段落
@@ -121,7 +121,7 @@ namespace Farmer_Project.Services.Article
                     SubContent = detail.SubContent ?? "未上傳"
                 });
             }
-            _articleRepository.Save();
+            await _articleRepository.SaveAsync();
 
             result.Success = true;
             return result;
@@ -132,7 +132,7 @@ namespace Farmer_Project.Services.Article
         {
             var result = new ArticleSaveResult();
 
-            var article = _articleRepository.GetByIdAndFarmerWithDetails(model.ArticlesId ?? 0, model.FarmersId);
+            var article = await _articleRepository.GetByIdAndFarmerWithDetailsAsync(model.ArticlesId ?? 0, model.FarmersId);
             if (article == null)
             {
                 result.NotFound = true;
@@ -224,23 +224,23 @@ namespace Farmer_Project.Services.Article
                 article.FarmersArticlesDetails.Remove(item);
             }
 
-            _articleRepository.Save();
+            await _articleRepository.SaveAsync();
 
             result.Success = true;
             return result;
         }
 
         // 刪除文章，找不到回傳false
-        public bool Delete(int deleteArticlesId)
+        public async Task<bool> DeleteAsync(int deleteArticlesId)
         {
-            var article = _articleRepository.GetById(deleteArticlesId);
+            var article = await _articleRepository.GetByIdAsync(deleteArticlesId);
             if (article == null)
             {
                 return false;
             }
 
             _articleRepository.RemoveArticle(article);
-            _articleRepository.Save();
+            await _articleRepository.SaveAsync();
             return true;
         }
 

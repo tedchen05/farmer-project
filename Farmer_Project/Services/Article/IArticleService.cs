@@ -6,11 +6,11 @@ namespace Farmer_Project.Services.Article
     // 文章管理商業邏輯
     public interface IArticleService
     {
-        List<FarmersArticles> GetBlog(string? cropsType);
-        FarmersArticles? GetArticle(int farmersId, int articlesId);
-        FarmersArticlesViewModel? BuildEditModel(int id);
+        Task<List<FarmersArticles>> GetBlogAsync(string? cropsType);
+        Task<FarmersArticles?> GetArticleAsync(int farmersId, int articlesId);
+        Task<FarmersArticlesViewModel?> BuildEditModelAsync(int id);
         Task<ArticleSaveResult> AddAsync(FarmersArticlesViewModel model, bool isPublish);
         Task<ArticleSaveResult> EditAsync(FarmersArticlesViewModel model, bool isPublish);
-        bool Delete(int deleteArticlesId);
+        Task<bool> DeleteAsync(int deleteArticlesId);
     }
 }

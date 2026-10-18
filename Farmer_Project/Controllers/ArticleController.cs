@@ -21,27 +21,27 @@ namespace Farmer_Project.Controllers
         // 後台文章列表
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var viewModel = _farmerService.GetDashboard();
+            var viewModel = await _farmerService.GetDashboardAsync();
             return View(viewModel);
         }
 
         // 部落格
         [HttpGet]
-        public IActionResult Blog(string? CropsType)
+        public async Task<IActionResult> Blog(string? CropsType)
         {
             ViewData["BodyClass"] = "sub_page";
-            var articles = _articleService.GetBlog(CropsType);
+            var articles = await _articleService.GetBlogAsync(CropsType);
             return View(articles);
         }
 
         // 部落格文章
         [HttpGet]
-        public IActionResult Articles(int FarmersId, int ArticlesId)
+        public async Task<IActionResult> Articles(int FarmersId, int ArticlesId)
         {
             ViewData["BodyClass"] = "sub_page";
-            var article = _articleService.GetArticle(FarmersId, ArticlesId);
+            var article = await _articleService.GetArticleAsync(FarmersId, ArticlesId);
             if (article == null)
             {
                 return NotFound();
@@ -84,9 +84,9 @@ namespace Farmer_Project.Controllers
         // 編輯文章
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult FarmersArtEdit(int id)
+        public async Task<IActionResult> FarmersArtEdit(int id)
         {
-            var viewModel = _articleService.BuildEditModel(id);
+            var viewModel = await _articleService.BuildEditModelAsync(id);
             if (viewModel == null)
             {
                 return NotFound("文章不存在");
@@ -118,9 +118,9 @@ namespace Farmer_Project.Controllers
         // 刪除文章
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult FarmersArtDelete(int DeleteArticlesId)
+        public async Task<IActionResult> FarmersArtDelete(int DeleteArticlesId)
         {
-            var ok = _articleService.Delete(DeleteArticlesId);
+            var ok = await _articleService.DeleteAsync(DeleteArticlesId);
             if (!ok)
             {
                 return NotFound("該文章不存在！");

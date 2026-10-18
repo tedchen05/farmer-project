@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Farmer_Project.Repositories.Login
 {
@@ -12,15 +13,15 @@ namespace Farmer_Project.Repositories.Login
         }
 
         // 依帳號取得會員，查無回傳null
-        public MemberInformation? GetByAccount(string account)
+        public async Task<MemberInformation?> GetByAccountAsync(string account)
         {
-            return _dbContext.MemberInformations.FirstOrDefault(m => m.Account == account);
+            return await _dbContext.MemberInformations.FirstOrDefaultAsync(m => m.Account == account);
         }
 
         // 確認帳號是否已存在
-        public bool ExistsByAccount(string account)
+        public async Task<bool> ExistsByAccountAsync(string account)
         {
-            return _dbContext.MemberInformations.Any(m => m.Account == account);
+            return await _dbContext.MemberInformations.AnyAsync(m => m.Account == account);
         }
 
         // 新增會員
@@ -30,9 +31,9 @@ namespace Farmer_Project.Repositories.Login
         }
 
         // 儲存變更
-        public void Save()
+        public async Task SaveAsync()
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

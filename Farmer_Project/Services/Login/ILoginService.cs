@@ -5,10 +5,10 @@ namespace Farmer_Project.Services.Login
     // 登入相關商業邏輯
     public interface ILoginService
     {
-        LoginResult Login(string account, string passwd);
-        OperationResult Register(RegisterInput input);
-        OperationResult CheckAccount(string account);
-        OperationResult ChangePassword(string account, string passwd, string passwd2);
-        OperationResult ReviseAccount(string account, string nickName, string passwd);
+        Task<LoginResult> LoginAsync(string account, string passwd);
+        Task<OperationResult> RegisterAsync(RegisterInput input);
+        Task<OperationResult> CheckAccountAsync(string account);
+        Task<OperationResult> ChangePasswordAsync(string account, string passwd, string passwd2);
+        Task<OperationResult> ReviseAccountAsync(string account, string nickName, string passwd);
     }
 }

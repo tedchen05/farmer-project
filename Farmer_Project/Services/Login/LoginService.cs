@@ -15,9 +15,9 @@ namespace Farmer_Project.Services.Login
         }
 
         // 驗證帳號密碼並回傳登入結果
-        public LoginResult Login(string account, string passwd)
+        public async Task<LoginResult> LoginAsync(string account, string passwd)
         {
-            var member = _loginRepository.GetByAccount(account);
+            var member = await _loginRepository.GetByAccountAsync(account);
 
             if (member == null)
             {
@@ -37,7 +37,7 @@ namespace Farmer_Project.Services.Login
         }
 
         // 註冊新會員
-        public OperationResult Register(RegisterInput input)
+        public async Task<OperationResult> RegisterAsync(RegisterInput input)
         {
             if (string.IsNullOrEmpty(input.NickName) || string.IsNullOrEmpty(input.Account) || string.IsNullOrEmpty(input.Passwd))
             {
@@ -49,7 +49,7 @@ namespace Farmer_Project.Services.Login
                 return OperationResult.Fail(MemberField.Passwd, "密碼需要8~12位數的符號");
             }
 
-            if (_loginRepository.ExistsByAccount(input.Account))
+            if (await _loginRepository.ExistsByAccountAsync(input.Account))
             {
                 return OperationResult.Fail(MemberField.Account, "帳號已經存在");
             }
@@ -63,19 +63,19 @@ namespace Farmer_Project.Services.Login
             };
 
             _loginRepository.Add(member);
-            _loginRepository.Save();
+            await _loginRepository.SaveAsync();
             return OperationResult.Ok("註冊成功");
         }
 
         // 忘記密碼:確認帳號是否存在
-        public OperationResult CheckAccount(string account)
+        public async Task<OperationResult> CheckAccountAsync(string account)
         {
             if (string.IsNullOrEmpty(account))
             {
                 return OperationResult.Fail(MemberField.None, "請填寫所有欄位。");
             }
 
-            if (!_loginRepository.ExistsByAccount(account))
+            if (!await _loginRepository.ExistsByAccountAsync(account))
             {
                 return OperationResult.Fail(MemberField.Account, "這個帳號不存在");
             }
@@ -84,7 +84,7 @@ namespace Farmer_Project.Services.Login
         }
 
         // 忘記密碼:驗證後更新密碼
-        public OperationResult ChangePassword(string account, string passwd, string passwd2)
+        public async Task<OperationResult> ChangePasswordAsync(string account, string passwd, string passwd2)
         {
             if (string.IsNullOrEmpty(passwd) || string.IsNullOrEmpty(passwd2))
             {
@@ -96,26 +96,26 @@ namespace Farmer_Project.Services.Login
                 return OperationResult.Fail(MemberField.Passwd, "密碼輸入錯誤");
             }
 
-            var member = _loginRepository.GetByAccount(account);
+            var member = await _loginRepository.GetByAccountAsync(account);
             if (member == null)
             {
                 return OperationResult.Fail(MemberField.Account, "找不到該帳號的資料");
             }
 
             member.Passwd = passwd;
-            _loginRepository.Save();
+            await _loginRepository.SaveAsync();
             return OperationResult.Ok("密碼更改完成");
         }
 
         // 會員資料修改
-        public OperationResult ReviseAccount(string account, string nickName, string passwd)
+        public async Task<OperationResult> ReviseAccountAsync(string account, string nickName, string passwd)
         {
             if (string.IsNullOrEmpty(account))
             {
                 return OperationResult.Fail(MemberField.None, "無效的帳號或尚未登入");
             }
 
-            var member = _loginRepository.GetByAccount(account);
+            var member = await _loginRepository.GetByAccountAsync(account);
             if (member == null)
             {
                 return OperationResult.Fail(MemberField.None, "找不到該帳號的資料");
@@ -123,7 +123,7 @@ namespace Farmer_Project.Services.Login
 
             member.NickName = nickName;
             member.Passwd = passwd;
-            _loginRepository.Save();
+            await _loginRepository.SaveAsync();
             return OperationResult.Ok("資料更新成功");
         }
     }

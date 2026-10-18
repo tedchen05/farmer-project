@@ -21,11 +21,11 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendEmail(string message, string actionType)
+        public async Task<IActionResult> SendEmail(string message, string actionType)
         {
             if (actionType == "yes")
             {
-                var result = _messageService.SendPromoToAll(message);
+                var result = await _messageService.SendPromoToAllAsync(message);
                 TempData["LabelResult"] = result.Message;
             }
 

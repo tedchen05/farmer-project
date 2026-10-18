@@ -8,7 +8,11 @@
 @{
     var subArticle = Model.FarmersArticlesDetails;
 }
-<img src="@subArticle[1].SubImagePath" class="img-fluid" />
+@if (subArticle.Count > 0)
+{
+    var banner = subArticle.Count > 1 ? subArticle[1] : subArticle[0];
+    <img src="@banner.SubImagePath" class="img-fluid" />
+}
 <hr />
 
 <div>
@@ -17,7 +21,10 @@
             <div class="col-lg-6">
                 <div class="row g-4 align-items-center">
                     <div class="col-6 mb-2">
-                        <img src="@Model.FarmersArticlesDetails[0].SubImagePath" class="img-fluid w-100 farmer_photo" alt="">
+                        @if (subArticle.Count > 0)
+                        {
+                            <img src="@subArticle[0].SubImagePath" class="img-fluid w-100 farmer_photo" alt="">
+                        }
                     </div>
                     <div class="col-6 mb-2">
                         <h3>@Model.FarmersInfo.Name</h3>

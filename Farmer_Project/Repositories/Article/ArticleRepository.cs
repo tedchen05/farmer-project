@@ -13,9 +13,9 @@ namespace Farmer_Project.Repositories.Article
         }
 
         // 取得某作物類型、已發佈的小農介紹文章
-        public List<FarmersArticles> GetFarmerIntros(string cropsType)
+        public async Task<List<FarmersArticles>> GetFarmerIntrosAsync(string cropsType)
         {
-            return _dbContext.FarmersArticles
+            return await _dbContext.FarmersArticles
                 .Include(f => f.FarmersInfo)
                 .Include(fd => fd.FarmersArticlesDetails)
                 .Where(a => a.FarmersInfo != null &&
@@ -23,22 +23,22 @@ namespace Farmer_Project.Repositories.Article
                             a.FarmersInfo.CropsType.ToLower() == cropsType.ToLower() &&
                             a.ArticleType == "小農介紹" &&
                             a.IsPublished)
-                .ToList();
+                .ToListAsync();
         }
 
         // 取得已發佈的單篇文章(含小農與段落)
-        public FarmersArticles? GetPublishedArticle(int farmersId, int articlesId)
+        public async Task<FarmersArticles?> GetPublishedArticleAsync(int farmersId, int articlesId)
         {
-            return _dbContext.FarmersArticles
+            return await _dbContext.FarmersArticles
                 .Include(f => f.FarmersInfo)
                 .Include(fad => fad.FarmersArticlesDetails)
-                .FirstOrDefault(a => a.FarmersId == farmersId &&
-                                     a.ArticlesId == articlesId &&
-                                     a.IsPublished);
+                .FirstOrDefaultAsync(a => a.FarmersId == farmersId &&
+                                          a.ArticlesId == articlesId &&
+                                          a.IsPublished);
         }
 
         // 取得部落格(一般文章)，可依作物類型篩選
-        public List<FarmersArticles> GetBlog(string? cropsType)
+        public async Task<List<FarmersArticles>> GetBlogAsync(string? cropsType)
         {
             var query = _dbContext.FarmersArticles
                 .Include(a => a.FarmersInfo)
@@ -49,29 +49,29 @@ namespace Farmer_Project.Repositories.Article
                 query = query.Where(a => a.FarmersInfo.CropsType == cropsType);
             }
 
-            return query.OrderByDescending(a => a.CreatedDate).ToList();
+            return await query.OrderByDescending(a => a.CreatedDate).ToListAsync();
         }
 
         // 依文章Id取得(含段落)
-        public FarmersArticles? GetByIdWithDetails(int id)
+        public async Task<FarmersArticles?> GetByIdWithDetailsAsync(int id)
         {
-            return _dbContext.FarmersArticles
+            return await _dbContext.FarmersArticles
                 .Include(a => a.FarmersArticlesDetails)
-                .FirstOrDefault(a => a.ArticlesId == id);
+                .FirstOrDefaultAsync(a => a.ArticlesId == id);
         }
 
         // 依文章Id與小農Id取得(含段落)
-        public FarmersArticles? GetByIdAndFarmerWithDetails(int articlesId, int farmersId)
+        public async Task<FarmersArticles?> GetByIdAndFarmerWithDetailsAsync(int articlesId, int farmersId)
         {
-            return _dbContext.FarmersArticles
+            return await _dbContext.FarmersArticles
                 .Include(a => a.FarmersArticlesDetails)
-                .FirstOrDefault(a => a.ArticlesId == articlesId && a.FarmersId == farmersId);
+                .FirstOrDefaultAsync(a => a.ArticlesId == articlesId && a.FarmersId == farmersId);
         }
 
         // 依文章Id取得
-        public FarmersArticles? GetById(int id)
+        public async Task<FarmersArticles?> GetByIdAsync(int id)
         {
-            return _dbContext.FarmersArticles.FirstOrDefault(a => a.ArticlesId == id);
+            return await _dbContext.FarmersArticles.FirstOrDefaultAsync(a => a.ArticlesId == id);
         }
 
         // 新增文章
@@ -93,9 +93,9 @@ namespace Farmer_Project.Repositories.Article
         }
 
         // 儲存變更
-        public void Save()
+        public async Task SaveAsync()
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -1,15 +1,18 @@
 using Farmer_Project.Helpers;
 using Farmer_Project.Models.Contact;
+using Microsoft.Extensions.Logging;
 
 namespace Farmer_Project.Services.Contact
 {
     public class ContactService : IContactService
     {
         private readonly EmailHelper _emailHelper;
+        private readonly ILogger<ContactService> _logger;
 
-        public ContactService(EmailHelper emailHelper)
+        public ContactService(EmailHelper emailHelper, ILogger<ContactService> logger)
         {
             _emailHelper = emailHelper;
+            _logger = logger;
         }
 
         // 寄送聯絡回覆信，成功回傳true
@@ -34,8 +37,9 @@ namespace Farmer_Project.Services.Contact
                 _emailHelper.SendEmail(model.Email, subject, body);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "寄送聯絡回覆信失敗, 收件者: {Email}", model.Email);
                 return false;
             }
         }

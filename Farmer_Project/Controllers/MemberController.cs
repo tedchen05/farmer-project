@@ -22,9 +22,9 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string sort, string nickName, string account, string passwd)
+        public async Task<IActionResult> Create(string sort, string nickName, string account, string passwd)
         {
-            var result = _memberService.Create(sort, nickName, account, passwd);
+            var result = await _memberService.CreateAsync(sort, nickName, account, passwd);
             if (!result.Valid)
             {
                 TempData["dele"] = true;
@@ -37,9 +37,9 @@ namespace Farmer_Project.Controllers
         }
 
         // 會員列表與搜尋
-        public IActionResult Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm)
         {
-            var members = _memberService.Search(searchTerm);
+            var members = await _memberService.SearchAsync(searchTerm);
 
             if (members.Count == 0)
             {
@@ -57,9 +57,9 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var member = _memberService.GetById(id);
+            var member = await _memberService.GetByIdAsync(id);
             if (member == null)
             {
                 return RedirectToAction("Index");
@@ -68,17 +68,17 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(int id, string sort, string nickName, string account, string passwd)
+        public async Task<IActionResult> Update(int id, string sort, string nickName, string account, string passwd)
         {
-            var result = _memberService.Update(id, sort, nickName, account, passwd);
+            var result = await _memberService.UpdateAsync(id, sort, nickName, account, passwd);
             TempData["Message"] = result.Message;
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _memberService.Delete(id);
+            await _memberService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
     }

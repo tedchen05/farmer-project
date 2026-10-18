@@ -13,30 +13,30 @@ namespace Farmer_Project.Repositories.Farmer
         }
 
         // 取得所有小農(含文章)
-        public List<FarmersInfo> GetAllWithArticles()
+        public async Task<List<FarmersInfo>> GetAllWithArticlesAsync()
         {
-            return _dbContext.FarmersInfo
+            return await _dbContext.FarmersInfo
                 .Include(f => f.FarmersArticles)
-                .ToList();
+                .ToListAsync();
         }
 
         // 依關鍵字搜尋小農
-        public List<FarmersInfo> Search(string search, string transSearch)
+        public async Task<List<FarmersInfo>> SearchAsync(string search, string transSearch)
         {
-            return _dbContext.FarmersInfo
+            return await _dbContext.FarmersInfo
                 .Where(f => f.Name.Contains(search) ||
                             f.FarmName.Contains(search) ||
                             f.CropsType.Contains(transSearch) ||
                             f.Address.Contains(search) ||
                             f.Phone.Contains(search))
                 .Include(f => f.FarmersArticles)
-                .ToList();
+                .ToListAsync();
         }
 
         // 依Id取得小農
-        public FarmersInfo? GetById(int id)
+        public async Task<FarmersInfo?> GetByIdAsync(int id)
         {
-            return _dbContext.FarmersInfo.FirstOrDefault(f => f.FarmersId == id);
+            return await _dbContext.FarmersInfo.FirstOrDefaultAsync(f => f.FarmersId == id);
         }
 
         // 新增小農
@@ -52,9 +52,9 @@ namespace Farmer_Project.Repositories.Farmer
         }
 
         // 儲存變更
-        public void Save()
+        public async Task SaveAsync()
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

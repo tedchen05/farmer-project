@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Farmer_Project.Repositories.Member
 {
@@ -12,13 +13,13 @@ namespace Farmer_Project.Repositories.Member
         }
 
         // 取得所有會員
-        public List<MemberInformation> GetAll()
+        public async Task<List<MemberInformation>> GetAllAsync()
         {
-            return _dbContext.MemberInformations.ToList();
+            return await _dbContext.MemberInformations.ToListAsync();
         }
 
         // 依關鍵字搜尋會員，空字串回傳全部
-        public List<MemberInformation> Search(string? keyword)
+        public async Task<List<MemberInformation>> SearchAsync(string? keyword)
         {
             var query = _dbContext.MemberInformations.AsQueryable();
 
@@ -29,13 +30,13 @@ namespace Farmer_Project.Repositories.Member
                                          m.Sort.Contains(keyword));
             }
 
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
         // 依Id取得會員
-        public MemberInformation? GetById(int id)
+        public async Task<MemberInformation?> GetByIdAsync(int id)
         {
-            return _dbContext.MemberInformations.FirstOrDefault(m => m.Id == id);
+            return await _dbContext.MemberInformations.FirstOrDefaultAsync(m => m.Id == id);
         }
 
         // 新增會員
@@ -51,9 +52,9 @@ namespace Farmer_Project.Repositories.Member
         }
 
         // 儲存變更
-        public void Save()
+        public async Task SaveAsync()
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

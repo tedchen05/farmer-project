@@ -16,7 +16,7 @@ namespace Farmer_Project.Controllers
 
         // 小農列表
         [HttpGet]
-        public IActionResult FarmersIndex(string CropsType)
+        public async Task<IActionResult> FarmersIndex(string CropsType)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -26,7 +26,7 @@ namespace Farmer_Project.Controllers
                 return View(new List<FarmersArticles>());
             }
 
-            var farmers = _farmerService.GetFarmerIntros(CropsType);
+            var farmers = await _farmerService.GetFarmerIntrosAsync(CropsType);
             if (!farmers.Any())
             {
                 ViewBag.Message = "沒有找到符合條件的文章！";
@@ -37,11 +37,11 @@ namespace Farmer_Project.Controllers
 
         // 小農故事
         [HttpGet]
-        public IActionResult FarmerDetail(int FarmersId, int ArticlesId)
+        public async Task<IActionResult> FarmerDetail(int FarmersId, int ArticlesId)
         {
             ViewData["BodyClass"] = "sub_page";
 
-            var article = _farmerService.GetFarmerStory(FarmersId, ArticlesId);
+            var article = await _farmerService.GetFarmerStoryAsync(FarmersId, ArticlesId);
             if (article == null)
             {
                 return NotFound("文章尚未建置或不存在");
@@ -53,18 +53,18 @@ namespace Farmer_Project.Controllers
         // 後台小農列表
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var viewModel = _farmerService.GetDashboard();
+            var viewModel = await _farmerService.GetDashboardAsync();
             return View(viewModel);
         }
 
         // 小農搜尋
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult FarmersInfoSearch(string Search)
+        public async Task<IActionResult> FarmersInfoSearch(string Search)
         {
-            var viewModel = _farmerService.Search(Search);
+            var viewModel = await _farmerService.SearchAsync(Search);
             return View("Index", viewModel);
         }
 
@@ -95,14 +95,14 @@ namespace Farmer_Project.Controllers
         // 修改小農
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public IActionResult FarmersInfoEdit(int id)
+        public async Task<IActionResult> FarmersInfoEdit(int id)
         {
             if (id == 0)
             {
                 return BadRequest("無效的農場ID");
             }
 
-            var farmer = _farmerService.GetById(id);
+            var farmer = await _farmerService.GetByIdAsync(id);
             if (farmer == null)
             {
                 return NotFound("找不到對應的農場資料");
@@ -130,9 +130,9 @@ namespace Farmer_Project.Controllers
         // 刪除小農
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult FarmersInfoDelete(int DeleteFarmersId)
+        public async Task<IActionResult> FarmersInfoDelete(int DeleteFarmersId)
         {
-            var ok = _farmerService.Delete(DeleteFarmersId);
+            var ok = await _farmerService.DeleteAsync(DeleteFarmersId);
             if (!ok)
             {
                 return NotFound("找不到對應的農場資料");

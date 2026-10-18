@@ -34,7 +34,7 @@ namespace Farmer_Project.Controllers
                 return View(member);
             }
 
-            var result = _loginService.Login(member.Account, member.Passwd); // 帳號驗證
+            var result = await _loginService.LoginAsync(member.Account, member.Passwd); // 帳號驗證
 
             // 檢查帳號是否存在
             if (result.Status == LoginStatus.AccountNotFound)
@@ -119,7 +119,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterInput input)
+        public async Task<IActionResult> Register(RegisterInput input)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -128,7 +128,7 @@ namespace Farmer_Project.Controllers
                 return View(input);
             }
 
-            var result = _loginService.Register(input);
+            var result = await _loginService.RegisterAsync(input);
             if (result.Success)
             {
                 TempData["message"] = result.Message;
@@ -140,7 +140,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResetPasswd(ForgetPasswordInput input)
+        public async Task<IActionResult> ResetPasswd(ForgetPasswordInput input)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -149,7 +149,7 @@ namespace Farmer_Project.Controllers
                 return View(input);
             }
 
-            var result = _loginService.CheckAccount(input.Account);
+            var result = await _loginService.CheckAccountAsync(input.Account);
             if (result.Success)
             {
                 HttpContext.Session.SetString(SessionKeys.ResetPwdUserId, input.Account);
@@ -162,7 +162,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult NewPasswd(NewPasswordInput input)
+        public async Task<IActionResult> NewPasswd(NewPasswordInput input)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -172,7 +172,7 @@ namespace Farmer_Project.Controllers
             }
 
             string account = HttpContext.Session.GetString(SessionKeys.ResetPwdUserId) ?? string.Empty;
-            var result = _loginService.ChangePassword(account, input.Passwd, input.Passwd2);
+            var result = await _loginService.ChangePasswordAsync(account, input.Passwd, input.Passwd2);
             if (result.Success)
             {
                 TempData["message"] = result.Message;
@@ -184,7 +184,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult ReviseAccount(ReviseAccountInput input)
+        public async Task<IActionResult> ReviseAccount(ReviseAccountInput input)
         {
             string account = User.Identity?.Name ?? string.Empty;
             if (string.IsNullOrEmpty(account))
@@ -199,7 +199,7 @@ namespace Farmer_Project.Controllers
                 return View(input);
             }
 
-            var result = _loginService.ReviseAccount(account, input.NickName, input.Passwd);
+            var result = await _loginService.ReviseAccountAsync(account, input.NickName, input.Passwd);
             TempData["message"] = result.Message;
             return RedirectToAction("Index", "Home");
         }
