@@ -2,6 +2,7 @@ using Farmer_Project.Common;
 using Farmer_Project.Filters;
 using Farmer_Project.Models.Article;
 using Farmer_Project.Services.Article;
+using Farmer_Project.Services.Farmer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Farmer_Project.Controllers
@@ -9,10 +10,21 @@ namespace Farmer_Project.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly IFarmerService _farmerService;
 
-        public ArticleController(IArticleService articleService)
+        public ArticleController(IArticleService articleService, IFarmerService farmerService)
         {
             _articleService = articleService;
+            _farmerService = farmerService;
+        }
+
+        // 後台文章列表
+        [AdminOnly]
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var viewModel = _farmerService.GetDashboard();
+            return View(viewModel);
         }
 
         // 部落格
@@ -66,7 +78,7 @@ namespace Farmer_Project.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("DashBoard", "Farmer", new { show = "FarmersArticlesList" });
+            return RedirectToAction("Index");
         }
 
         // 編輯文章
@@ -100,7 +112,7 @@ namespace Farmer_Project.Controllers
                 return View(model);
             }
 
-            return RedirectToAction("DashBoard", "Farmer", new { farmersId = model.FarmersId, show = "FarmersArticlesList" });
+            return RedirectToAction("Index");
         }
 
         // 刪除文章
@@ -114,7 +126,7 @@ namespace Farmer_Project.Controllers
                 return NotFound("該文章不存在！");
             }
 
-            return RedirectToAction("DashBoard", "Farmer", new { show = "FarmersArticlesList" });
+            return RedirectToAction("Index");
         }
     }
 }

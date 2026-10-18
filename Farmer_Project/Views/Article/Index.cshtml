@@ -1,0 +1,69 @@
+@model Farmer_Project.Entities.FarmersAndMembersViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+    ViewData["Title"] = "小農文章";
+}
+
+<h2>小農文章</h2>
+<hr />
+@foreach (var item in Model.FarmersInfos.Select((farmer, idx) => new { farmer = farmer, idx = idx }))
+{
+    <div class="accordion mb-2" id="accordion_@(item.idx + 1)">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_@(item.idx + 1)">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@(item.idx + 1)" aria-expanded="false" aria-controls="collapse_@(item.idx + 1)">
+                    <div class="me-3">@(item.idx + 1)</div>
+                    <div>@item.farmer.FarmName</div>
+                </button>
+            </h2>
+            <div id="collapse_@(item.idx + 1)" class="accordion-collapse collapse" aria-labelledby="heading_@(item.idx + 1)">
+                <div class="accordion-body">
+                    <div>
+                        <a href="@Url.Action("FarmersArtAdd", "Article", new { id = item.farmer.FarmersId })" class="btn btn-primary">新增文章</a>
+                    </div>
+
+                    @if (item.farmer.FarmersArticles.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>編號</th>
+                                    <th>標題</th>
+                                    <th>文章分類</th>
+                                    <th>文章圖片</th>
+                                    <th>發佈</th>
+                                    <th>編輯日期</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var (article, idx) in item.farmer.FarmersArticles.Select((article, index) => (article, index)))
+                                {
+                                    <tr>
+                                        <th scope="row" style="vertical-align: middle;">@(idx + 1)</th>
+                                        <td style="vertical-align: middle;">@article.ArticleTitle</td>
+                                        <td style="vertical-align: middle;">@article.ArticleType</td>
+                                        <td style="vertical-align: middle;"><img src="@article.ArticleImagePath" style="max-width: 100px; max-height: 100px; object-fit: cover;" /></td>
+                                        <td style="vertical-align: middle;">@(article.IsPublished ? "是" : "否")</td>
+                                        <td style="vertical-align: middle;">@article.CreatedDate</td>
+                                        <td class="d-flex" style="vertical-align: middle; align-items: center;">
+                                            <a href="@Url.Action("FarmersArtEdit", "Article", new { id = article.ArticlesId })" class="btn btn-success me-2">編輯</a>
+                                            <form method="post" action="@Url.Action("FarmersArtDelete", "Article")" onsubmit="return confirm('確認刪除這筆資料？');">
+                                                <input type="hidden" name="DeleteArticlesId" value="@article.ArticlesId" />
+                                                <button type="submit" class="btn btn-danger">刪除</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <h3 class="my-3 p-3 bg-warning rounded">目前沒有文章</h3>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

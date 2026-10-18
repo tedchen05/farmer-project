@@ -37,22 +37,22 @@
                         <div class="d-flex flex-column flex-lg-row align-items-center">
                             <ul class="navbar-nav">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="/Home/index">首頁 <span class="visually-hidden">(current)</span></a>
+                                    <a class="nav-link" href="/Home/Index">首頁 <span class="visually-hidden">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Home/about">關於我們</a>
+                                    <a class="nav-link" href="/Home/About">關於我們</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Home/crop">優質小農</a>
+                                    <a class="nav-link" href="/Home/Crop">優質小農</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Home/testimonial">小農推薦</a>
+                                    <a class="nav-link" href="/Home/Testimonial">小農推薦</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/Article/Blog">部落格</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/Home/contact">聯絡我們</a>
+                                    <a class="nav-link" href="/Home/Contact">聯絡我們</a>
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto">
@@ -60,7 +60,7 @@
                                 {
                                     <select class="dropdown-btn" onchange="window.location.href=this.value;">
                                         <option value="#" disabled selected>會員專區</option>
-                                        <option value="@Url.Action("reviseAccount", "Account")">會員修改</option>
+                                        <option value="@Url.Action("ReviseAccount", "Account")">會員修改</option>
                                         <option value="@Url.Action("Logout1", "Account")">登出</option>
                                     </select>
                                 }

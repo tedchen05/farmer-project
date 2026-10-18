@@ -1,0 +1,19 @@
+@{
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+    ViewData["Title"] = "訊息發送";
+}
+
+<h3>發送訊息</h3>
+@if (TempData["LabelResult"] != null)
+{
+    <div class="alert alert-info">@TempData["LabelResult"]</div>
+}
+
+<form method="post" action="@Url.Action("SendEmail", "Message")">
+    <div class="mb-3">
+        <label for="Message" class="form-label">訊息內容</label>
+        <textarea class="form-control" id="Message" name="message" rows="3" required></textarea>
+    </div>
+    <input type="hidden" name="actionType" value="yes" />
+    <button type="submit" class="btn btn-primary">發送郵件</button>
+</form>

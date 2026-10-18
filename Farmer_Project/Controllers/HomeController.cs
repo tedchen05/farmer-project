@@ -13,7 +13,7 @@ namespace Farmer_Project.Controllers
             _contactService = contactService;
         }
 
-        public IActionResult index()
+        public IActionResult Index()
         {
             TempData.Clear();
             return View();
@@ -25,7 +25,7 @@ namespace Farmer_Project.Controllers
             return View();
         }
 
-        public IActionResult about()
+        public IActionResult About()
         {
             ViewData["BodyClass"] = "sub_page";
             return View();
@@ -37,7 +37,7 @@ namespace Farmer_Project.Controllers
             return View();
         }
 
-        public IActionResult testimonial()
+        public IActionResult Testimonial()
         {
             ViewData["BodyClass"] = "sub_page";
             return View();

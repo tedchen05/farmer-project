@@ -1,0 +1,52 @@
+@model Farmer_Project.Entities.FarmersAndMembersViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+    ViewData["Title"] = "會員管理";
+}
+
+<h3>會員列表</h3>
+<form method="get" action="@Url.Action("Index", "Member")">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="搜尋會員" name="searchTerm" value="@ViewBag.SearchTerm" />
+        <button class="btn btn-outline-secondary" type="submit">搜尋</button>
+    </div>
+</form>
+
+<a href="@Url.Action("Create", "Member")" class="btn btn-sm btn-primary mb-3">新增</a>
+<a href="@Url.Action("Index", "Member")" class="btn btn-sm btn-secondary mb-3">取消搜尋</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>編號</th>
+            <th>權限</th>
+            <th>名稱</th>
+            <th>帳號</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.MemberInformations.Any())
+        {
+            foreach (var member in Model.MemberInformations)
+            {
+                <tr>
+                    <td>@member.Id</td>
+                    <td>@member.Sort</td>
+                    <td>@member.NickName</td>
+                    <td>@member.Account</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Member", new { id = member.Id })" class="btn btn-sm btn-warning">編輯</a>
+                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="@member.Id">刪除</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">沒有資料可顯示。</td>
+            </tr>
+        }
+    </tbody>
+</table>

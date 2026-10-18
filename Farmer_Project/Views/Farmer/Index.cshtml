@@ -1,0 +1,64 @@
+@model Farmer_Project.Entities.FarmersAndMembersViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_Manage.cshtml";
+    ViewData["Title"] = "小農資料";
+}
+
+<div class="d-flex justify-content-end p-3">
+    <form class="w-70 me-3 input-group" action="@Url.Action("FarmersInfoSearch", "Farmer")" method="get">
+        <input type="search" name="Search" class="form-control rounded-pill me-1" placeholder="Search..." aria-label="Search">
+        <button class="btn border rounded-pill" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+</div>
+
+<div class="d-flex mb-2">
+    <div class="me-3 p-1">
+        <h2>小農資料</h2>
+    </div>
+    <div>
+        <a href="@Url.Action("FarmersInfoAdd", "Farmer")" class="btn btn-primary">新增成員</a>
+    </div>
+</div>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>小農編號</th>
+            <th>小農負責人</th>
+            <th>農場名稱</th>
+            <th>農作物</th>
+            <th>農場地址</th>
+            <th>聯絡電話</th>
+            <th>信箱</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.FarmersInfos.Any())
+        {
+            foreach (var item in Model.FarmersInfos.Select((farmer, idx) => new { farmer = farmer, idx = idx + 1 }))
+            {
+                <tr>
+                    <th scope="row">@item.idx</th>
+                    <td>@item.farmer.Name</td>
+                    <td>@item.farmer.FarmName</td>
+                    <td>@item.farmer.CropsType</td>
+                    <td>@item.farmer.Address</td>
+                    <td>@item.farmer.Phone</td>
+                    <td>@item.farmer.Email</td>
+                    <td class="d-flex">
+                        <a href="@Url.Action("FarmersInfoEdit", "Farmer", new { id = item.farmer.FarmersId })" class="btn btn-success me-2">編輯</a>
+                        <form method="post" action="@Url.Action("FarmersInfoDelete", "Farmer")" onsubmit="return confirm('確認刪除這筆資料？ 此資料刪除會包含所屬文章一併刪除');">
+                            <input type="hidden" name="DeleteFarmersId" value="@item.farmer.FarmersId" />
+                            <button type="submit" class="btn btn-danger">刪除</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="8" class="text-center">目前沒有資料</td></tr>
+        }
+    </tbody>
+</table>

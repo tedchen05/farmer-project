@@ -14,6 +14,12 @@ namespace Farmer_Project.Controllers
             _messageService = messageService;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult SendEmail(string message, string actionType)
         {
@@ -23,8 +29,7 @@ namespace Farmer_Project.Controllers
                 TempData["LabelResult"] = result.Message;
             }
 
-            TempData["messageBtn"] = true;
-            return RedirectToAction("DashBoard", "Farmer");
+            return RedirectToAction("Index");
         }
     }
 }

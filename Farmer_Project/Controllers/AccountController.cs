@@ -68,7 +68,7 @@ namespace Farmer_Project.Controllers
             else
             {
                 HttpContext.Session.SetString(SessionKeys.UserRole, UserRoles.Admin); // 記錄管理者角色
-                return RedirectToAction("DashBoard", "Farmer");
+                return RedirectToAction("Index", "Member");
             }
         }
 
@@ -89,35 +89,35 @@ namespace Farmer_Project.Controllers
         }
 
         // 忘記密碼頁
-        public IActionResult resetPasswd()
+        public IActionResult ResetPasswd()
         {
             ViewData["BodyClass"] = "sub_page";
             return View();
         }
 
         // 重設密碼頁
-        public IActionResult newPasswd()
+        public IActionResult NewPasswd()
         {
             ViewData["BodyClass"] = "sub_page";
             return View();
         }
 
         // 註冊頁
-        public IActionResult register()
+        public IActionResult Register()
         {
             ViewData["BodyClass"] = "sub_page";
             return View();
         }
 
         // 會員資料修改頁
-        public IActionResult reviseAccount()
+        public IActionResult ReviseAccount()
         {
             ViewData["BodyClass"] = "sub_page";
             return View();
         }
 
         [HttpPost]
-        public IActionResult register(RegisterInput input)
+        public IActionResult Register(RegisterInput input)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -133,7 +133,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult resetPasswd(ForgetPasswordInput input)
+        public IActionResult ResetPasswd(ForgetPasswordInput input)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -142,7 +142,7 @@ namespace Farmer_Project.Controllers
             {
                 HttpContext.Session.SetString(SessionKeys.ResetPwdUserId, input.Account);
                 TempData["message"] = result.Message;
-                return RedirectToAction("newPasswd");
+                return RedirectToAction("NewPasswd");
             }
 
             ApplySingleError(result);
@@ -150,7 +150,7 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult newPasswd(ForgetPasswordInput input)
+        public IActionResult NewPasswd(ForgetPasswordInput input)
         {
             ViewData["BodyClass"] = "sub_page";
 
@@ -167,11 +167,11 @@ namespace Farmer_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult reviseAccount(ReviseAccountInput input)
+        public IActionResult ReviseAccount(ReviseAccountInput input)
         {
             string account = HttpContext.Request.Cookies["UserAccount"] ?? string.Empty;
             _loginService.ReviseAccount(account, input.NickName, input.Passwd);
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         // 將錯誤對應到註冊頁的各欄位訊息

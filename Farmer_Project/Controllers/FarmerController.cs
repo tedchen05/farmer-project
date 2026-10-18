@@ -1,4 +1,3 @@
-using Farmer_Project.Common;
 using Farmer_Project.Entities;
 using Farmer_Project.Filters;
 using Farmer_Project.Services.Farmer;
@@ -51,20 +50,13 @@ namespace Farmer_Project.Controllers
             return View(article);
         }
 
-        // 後台主頁
+        // 後台小農列表
         [AdminOnly]
-        public IActionResult DashBoard()
+        [HttpGet]
+        public IActionResult Index()
         {
             var viewModel = _farmerService.GetDashboard();
             return View(viewModel);
-        }
-
-        // 登出
-        [AdminOnly]
-        public IActionResult LogOut()
-        {
-            HttpContext.Session.Remove(SessionKeys.IsLoggedIn);
-            return RedirectToAction("Index", "Home");
         }
 
         // 小農搜尋
@@ -73,13 +65,7 @@ namespace Farmer_Project.Controllers
         public IActionResult FarmersInfoSearch(string Search)
         {
             var viewModel = _farmerService.Search(Search);
-
-            if (!string.IsNullOrEmpty(Search))
-            {
-                TempData["show"] = "FarmersInfoTable";
-            }
-
-            return View("DashBoard", viewModel);
+            return View("Index", viewModel);
         }
 
         // 新增小農
@@ -138,7 +124,7 @@ namespace Farmer_Project.Controllers
             }
 
             TempData["SuccessMessage"] = "小農資料修改成功！";
-            return RedirectToAction("DashBoard", new { show = "FarmersInfoTable" });
+            return RedirectToAction("Index");
         }
 
         // 刪除小農
@@ -153,7 +139,7 @@ namespace Farmer_Project.Controllers
             }
 
             TempData["SuccessMessage"] = "小農資料刪除成功！";
-            return RedirectToAction("DashBoard", new { show = "FarmersInfoTable" });
+            return RedirectToAction("Index");
         }
     }
 }
