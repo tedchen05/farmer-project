@@ -278,6 +278,7 @@
                         }
                         <!-- ªí³æ -->
                         <form method="post" action="/Home/Contact">
+                            @Html.AntiForgeryToken()
                             <div>
                                 <div>
                                     <input type="text" id="Name" name="Name" class="form-control" placeholder="©m¦W" required />

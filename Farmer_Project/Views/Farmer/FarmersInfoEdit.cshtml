@@ -9,7 +9,7 @@
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="card shadow" style="width: 100%; max-width: 650px; padding: 20px;">
         <form id="farmersForm" class="form" action="/Farmer/FarmersInfoEdit" method="post" enctype="multipart/form-data">
-
+            @Html.AntiForgeryToken()
             <div class="bg_color py-2 rounded mb-4">
                 <h4 class="text-center mb-0">編輯小農資料</h4>
             </div>

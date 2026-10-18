@@ -49,6 +49,7 @@
                     <td class="d-flex">
                         <a href="@Url.Action("FarmersInfoEdit", "Farmer", new { id = item.farmer.FarmersId })" class="btn btn-success me-2">編輯</a>
                         <form method="post" action="@Url.Action("FarmersInfoDelete", "Farmer")" onsubmit="return confirm('確認刪除這筆資料？ 此資料刪除會包含所屬文章一併刪除');">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="DeleteFarmersId" value="@item.farmer.FarmersId" />
                             <button type="submit" class="btn btn-danger">刪除</button>
                         </form>

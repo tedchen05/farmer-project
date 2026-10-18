@@ -31,8 +31,6 @@ namespace Farmer_Project.Controllers
                 return View(member);
             }
 
-            Response.Cookies.Append("UserAccount", member.Account, new CookieOptions { Expires = DateTimeOffset.Now.AddHours(1) });
-
             var result = _loginService.Login(member.Account, member.Passwd); // 帳號驗證
 
             // 檢查帳號是否存在
@@ -103,8 +101,14 @@ namespace Farmer_Project.Controllers
         // 會員資料修改頁
         public IActionResult ReviseAccount()
         {
+            string account = HttpContext.Session.GetString(SessionKeys.UserName) ?? string.Empty;
+            if (string.IsNullOrEmpty(account))
+            {
+                return RedirectToAction("Login");
+            }
+
             ViewData["BodyClass"] = "sub_page";
-            return View();
+            return View(new ReviseAccountInput { Account = account });
         }
 
         [HttpPost]
@@ -175,8 +179,21 @@ namespace Farmer_Project.Controllers
         [HttpPost]
         public IActionResult ReviseAccount(ReviseAccountInput input)
         {
-            string account = HttpContext.Request.Cookies["UserAccount"] ?? string.Empty;
-            _loginService.ReviseAccount(account, input.NickName, input.Passwd);
+            string account = HttpContext.Session.GetString(SessionKeys.UserName) ?? string.Empty;
+            if (string.IsNullOrEmpty(account))
+            {
+                return RedirectToAction("Login");
+            }
+
+            ViewData["BodyClass"] = "sub_page";
+            if (!ModelState.IsValid)
+            {
+                input.Account = account;
+                return View(input);
+            }
+
+            var result = _loginService.ReviseAccount(account, input.NickName, input.Passwd);
+            TempData["message"] = result.Message;
             return RedirectToAction("Index", "Home");
         }
 

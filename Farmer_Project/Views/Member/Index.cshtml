@@ -37,7 +37,10 @@
                     <td>@member.Account</td>
                     <td>
                         <a href="@Url.Action("Edit", "Member", new { id = member.Id })" class="btn btn-sm btn-warning">編輯</a>
-                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="@member.Id">刪除</button>
+                        <form method="post" action="@Url.Action("Delete", "Member", new { id = member.Id })" class="d-inline" onsubmit="return confirm('確認刪除這筆資料？');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-danger">刪除</button>
+                        </form>
                     </td>
                 </tr>
             }

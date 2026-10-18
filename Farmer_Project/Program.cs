@@ -9,12 +9,17 @@ using Farmer_Project.Services.Farmer;
 using Farmer_Project.Services.Login;
 using Farmer_Project.Services.Member;
 using Farmer_Project.Services.Message;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+// 全域啟用防偽驗證, 所有非 GET 請求都會檢查 token
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
 
 //建立資料表映射串接
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -7,6 +7,7 @@
     <div>
         <h2 class="text-center mb-4">後台管理系統-新增會員資料</h2>
         <form method="post" action="@Url.Action("Create", "Member")">
+            @Html.AntiForgeryToken()
             <div class="mb-3">
                 <label for="Sort" class="form-label">權限</label>
                 <input type="text" class="form-control" placeholder="0：一般會員；1：系統管理者" id="Sort" name="sort" required />

@@ -19,7 +19,7 @@
         <li class="border-top my-3"></li>
         <li class="mb-1">
             <button class="btn rounded w-100 text-start" id="logoutBtn">登出</button>
-            <form action="@Url.Action("Logout", "Account")" method="post" id="logoutForm" style="display:none;"></form>
+            <form action="@Url.Action("Logout", "Account")" method="post" id="logoutForm" style="display:none;">@Html.AntiForgeryToken()</form>
         </li>
     </ul>
 </div>

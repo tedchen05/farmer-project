@@ -13,6 +13,7 @@
             <hr />
             
             <form class="form rounded" asp-action="FarmersArtAdd" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
                 <div class="rounded-3 bg-light p-3 shadow mb-3">
                     <input type="hidden" name="FarmersId" value="@Model.FarmersId" />
 

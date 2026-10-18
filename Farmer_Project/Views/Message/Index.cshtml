@@ -10,6 +10,7 @@
 }
 
 <form method="post" action="@Url.Action("SendEmail", "Message")">
+    @Html.AntiForgeryToken()
     <div class="mb-3">
         <label for="Message" class="form-label">訊息內容</label>
         <textarea class="form-control" id="Message" name="message" rows="3" required></textarea>

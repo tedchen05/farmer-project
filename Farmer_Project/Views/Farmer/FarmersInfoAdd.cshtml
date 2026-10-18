@@ -8,6 +8,7 @@
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <div class="card shadow" style="width: 100%; max-width: 650px; padding: 20px;">
         <form id="farmersForm" action="/Farmer/FarmersInfoAdd" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
             @if (ViewBag.Message != null)
             {
                 <div class="alert @(ViewBag.Message.Contains("錯誤") ? "alert-danger" : "alert-info")" role="alert">

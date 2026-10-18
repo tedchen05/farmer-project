@@ -6,6 +6,7 @@
 
 <div class="container">
     <form method="post" action="/Account/NewPasswd">
+        @Html.AntiForgeryToken()
         <br />
         <h2>密碼重設</h2>
         <br />
