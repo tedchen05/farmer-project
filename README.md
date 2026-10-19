@@ -25,9 +25,9 @@
 ## 技術
 
 - ASP.NET Core 8 MVC
-- Entity Framework Core 9（SQL Server LocalDB）
+- Entity Framework Core 8（SQL Server LocalDB）
 - MailKit / MimeKit（寄送 Email）
-- Bootstrap、jQuery
+- Bootstrap、jQuery、SweetAlert2
 
 ## 安裝
 
@@ -62,13 +62,7 @@ ALTER ROLE db_owner ADD MEMBER admin;
 ## 執行
 
 1. 依上一節設定連線字串與登入帳號。
-2. 建立資料庫（套用 Migration）：
-
-   ```bash
-   cd Farmer_Project
-   dotnet ef database update
-   ```
-
+2. 準備資料庫：本專案未包含 EF Migration，請先在 SQL Server 建立名為 `Farmers` 的資料庫與對應資料表。
 3. 啟動：
 
    ```bash
@@ -81,13 +75,13 @@ ALTER ROLE db_owner ADD MEMBER admin;
 
 - 前台可直接瀏覽小農、作物與部落格內容。
 - 一般會員登入後可修改個人資料。
-- 管理者登入後自動導向後台（`/Farmers/DashBoard`），管理小農與會員資料。
+- 管理者登入後自動導向後台會員管理頁（`/Member`），可管理小農與會員資料。
 - 會員權限以 `MemberInformations.Sort` 區分：`0` 一般會員、`1` 管理者。
 
 ## 常見問題
 
 **Q：啟動後出現資料庫連線錯誤？**
-A：確認 LocalDB 已安裝並啟動、`appsettings.json` 連線字串正確、且已建立對應的登入帳號；首次執行需先跑 `dotnet ef database update` 建立資料表。
+A：確認 LocalDB 已安裝並啟動、`appsettings.json` 連線字串正確、已建立對應的登入帳號，且 `Farmers` 資料庫與資料表都已建立。
 
 **Q：圖片上傳後找不到？**
 A：上傳的圖片存放於 `wwwroot/images`，檔名以內容的 MD5 命名；請確認該資料夾存在且有寫入權限。
