@@ -25,3 +25,7 @@ __pycache__/
 *.csv
 個人筆記/
 *.local.md
+
+# 前端函式庫的 dist 屬於相依套件，需進版控（不是建置輸出）
+!Farmer_Project/wwwroot/lib/**/dist/
+!Farmer_Project/wwwroot/lib/**/dist/**
