@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Farmer_Project.Models.Common;
 using Farmer_Project.Models.Member;
 using Farmer_Project.Repositories.Member;
 using Microsoft.Extensions.Logging;
@@ -16,10 +17,10 @@ namespace Farmer_Project.Services.Member
             _logger = logger;
         }
 
-        // 搜尋會員
-        public async Task<List<MemberInformation>> SearchAsync(string? keyword)
+        // 搜尋會員(分頁)
+        public async Task<PagedList<MemberInformation>> SearchAsync(string? keyword, int pageNumber, int pageSize)
         {
-            return await _memberRepository.SearchAsync(keyword);
+            return await _memberRepository.SearchPagedAsync(keyword, pageNumber, pageSize);
         }
 
         // 依Id取得會員
@@ -29,7 +30,7 @@ namespace Farmer_Project.Services.Member
         }
 
         // 新增會員
-        public async Task<MemberResult> CreateAsync(string sort, string nickName, string account, string passwd)
+        public async Task<MemberResult> CreateAsync(string? sort, string? nickName, string? account, string? passwd)
         {
             if (string.IsNullOrEmpty(sort) || string.IsNullOrEmpty(nickName) ||
                 string.IsNullOrEmpty(account) || string.IsNullOrEmpty(passwd))
@@ -52,17 +53,23 @@ namespace Farmer_Project.Services.Member
             catch (Exception ex)
             {
                 _logger.LogError(ex, "新增會員失敗, 帳號: {Account}", account);
-                return new MemberResult { Valid = true, Message = "新增失敗：" + ex.Message };
+                return new MemberResult { Valid = false, Message = "新增失敗：" + ex.Message };
             }
         }
 
         // 更新會員
-        public async Task<MemberResult> UpdateAsync(int id, string sort, string nickName, string account, string passwd)
+        public async Task<MemberResult> UpdateAsync(int id, string? sort, string? nickName, string? account, string? passwd)
         {
+            if (string.IsNullOrEmpty(sort) || string.IsNullOrEmpty(nickName) ||
+                string.IsNullOrEmpty(account) || string.IsNullOrEmpty(passwd))
+            {
+                return new MemberResult { Valid = false, Message = "請填寫所有欄位。" };
+            }
+
             var member = await _memberRepository.GetByIdAsync(id);
             if (member == null)
             {
-                return new MemberResult { Valid = true, Message = "找不到該會員資料" };
+                return new MemberResult { Valid = false, Message = "找不到該會員資料" };
             }
 
             member.Sort = sort;
@@ -78,7 +85,7 @@ namespace Farmer_Project.Services.Member
             catch (Exception ex)
             {
                 _logger.LogError(ex, "更新會員失敗, Id: {Id}", id);
-                return new MemberResult { Valid = true, Message = "更新失敗：" + ex.Message };
+                return new MemberResult { Valid = false, Message = "更新失敗：" + ex.Message };
             }
         }
 

@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Routing
+@model Farmer_Project.Models.Common.PaginationViewModel
+
+@{
+    // 依頁碼與每頁筆數組出網址，帶上搜尋等既有參數
+    Func<int, int, string?> buildUrl = (page, size) =>
+    {
+        var rv = new RouteValueDictionary(Model.RouteValues);
+        rv["page"] = page;
+        rv["pageSize"] = size;
+        return Url.Action(Model.Action, Model.Controller, rv);
+    };
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+    <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">共 @Model.TotalCount 筆</span>
+        <label class="text-muted small mb-0">每頁</label>
+        <select class="form-select form-select-sm w-auto" onchange="location.href=this.value;">
+            @foreach (var size in Model.AllowedPageSizes)
+            {
+                if (size == Model.PageSize)
+                {
+                    <option value="@buildUrl(1, size)" selected>@size 筆</option>
+                }
+                else
+                {
+                    <option value="@buildUrl(1, size)">@size 筆</option>
+                }
+            }
+        </select>
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(Model.PageNumber <= 1 ? "disabled" : "")">
+                    <a class="page-link" href="@buildUrl(Model.PageNumber - 1, Model.PageSize)">上一頁</a>
+                </li>
+                @for (int p = 1; p <= Model.TotalPages; p++)
+                {
+                    <li class="page-item @(p == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" href="@buildUrl(p, Model.PageSize)">@p</a>
+                    </li>
+                }
+                <li class="page-item @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@buildUrl(Model.PageNumber + 1, Model.PageSize)">下一頁</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

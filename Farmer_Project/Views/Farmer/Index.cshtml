@@ -1,12 +1,14 @@
-@model Farmer_Project.Entities.FarmersAndMembersViewModel
+@using Farmer_Project.Models.Common
+@model Farmer_Project.Models.Farmer.FarmerListViewModel
 @{
     Layout = "~/Views/Shared/_Layout_Manage.cshtml";
     ViewData["Title"] = "小農資料";
 }
 
 <div class="d-flex justify-content-end p-3">
-    <form class="w-70 me-3 input-group" action="@Url.Action("FarmersInfoSearch", "Farmer")" method="get">
-        <input type="search" name="Search" class="form-control rounded-pill me-1" placeholder="Search..." aria-label="Search">
+    <form class="w-70 me-3 input-group" action="@Url.Action("Index", "Farmer")" method="get">
+        <input type="search" name="searchTerm" value="@Model.SearchTerm" class="form-control rounded-pill me-1" placeholder="Search..." aria-label="Search">
+        <input type="hidden" name="pageSize" value="@Model.Farmers.PageSize" />
         <button class="btn border rounded-pill" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 </div>
@@ -34,9 +36,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.FarmersInfos.Any())
+        @if (Model.Farmers.Items.Any())
         {
-            foreach (var item in Model.FarmersInfos.Select((farmer, idx) => new { farmer = farmer, idx = idx + 1 }))
+            foreach (var item in Model.Farmers.Items.Select((farmer, idx) => new { farmer = farmer, idx = (Model.Farmers.PageNumber - 1) * Model.Farmers.PageSize + idx + 1 }))
             {
                 <tr>
                     <th scope="row">@item.idx</th>
@@ -48,7 +50,7 @@
                     <td>@item.farmer.Email</td>
                     <td class="d-flex">
                         <a href="@Url.Action("FarmersInfoEdit", "Farmer", new { id = item.farmer.FarmersId })" class="btn btn-success me-2">編輯</a>
-                        <form method="post" action="@Url.Action("FarmersInfoDelete", "Farmer")" onsubmit="return confirm('確認刪除這筆資料？ 此資料刪除會包含所屬文章一併刪除');">
+                        <form method="post" action="@Url.Action("FarmersInfoDelete", "Farmer")" class="js-confirm" data-confirm="確認刪除這筆資料？ 此資料刪除會包含所屬文章一併刪除">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="DeleteFarmersId" value="@item.farmer.FarmersId" />
                             <button type="submit" class="btn btn-danger">刪除</button>
@@ -63,3 +65,14 @@
         }
     </tbody>
 </table>
+
+@await Html.PartialAsync("_Pagination", new PaginationViewModel
+{
+    PageNumber = Model.Farmers.PageNumber,
+    PageSize = Model.Farmers.PageSize,
+    TotalPages = Model.Farmers.TotalPages,
+    TotalCount = Model.Farmers.TotalCount,
+    Action = "Index",
+    Controller = "Farmer",
+    RouteValues = new Dictionary<string, string?> { { "searchTerm", Model.SearchTerm } }
+})

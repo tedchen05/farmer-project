@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Farmer_Project.Models.Common;
 
 namespace Farmer_Project.Repositories.Member
 {
@@ -6,7 +7,7 @@ namespace Farmer_Project.Repositories.Member
     public interface IMemberRepository
     {
         Task<List<MemberInformation>> GetAllAsync();
-        Task<List<MemberInformation>> SearchAsync(string? keyword);
+        Task<PagedList<MemberInformation>> SearchPagedAsync(string? keyword, int pageNumber, int pageSize);
         Task<MemberInformation?> GetByIdAsync(int id);
         void Add(MemberInformation member);
         void Remove(MemberInformation member);

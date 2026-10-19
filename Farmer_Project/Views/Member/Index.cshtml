@@ -1,4 +1,5 @@
-@model Farmer_Project.Entities.FarmersAndMembersViewModel
+@using Farmer_Project.Models.Common
+@model Farmer_Project.Models.Member.MemberListViewModel
 @{
     Layout = "~/Views/Shared/_Layout_Manage.cshtml";
     ViewData["Title"] = "會員管理";
@@ -7,7 +8,8 @@
 <h3>會員列表</h3>
 <form method="get" action="@Url.Action("Index", "Member")">
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="搜尋會員" name="searchTerm" value="@ViewBag.SearchTerm" />
+        <input type="text" class="form-control" placeholder="搜尋會員" name="searchTerm" value="@Model.SearchTerm" />
+        <input type="hidden" name="pageSize" value="@Model.Members.PageSize" />
         <button class="btn btn-outline-secondary" type="submit">搜尋</button>
     </div>
 </form>
@@ -26,9 +28,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.MemberInformations.Any())
+        @if (Model.Members.Items.Any())
         {
-            foreach (var member in Model.MemberInformations)
+            foreach (var member in Model.Members.Items)
             {
                 <tr>
                     <td>@member.Id</td>
@@ -37,7 +39,7 @@
                     <td>@member.Account</td>
                     <td>
                         <a href="@Url.Action("Edit", "Member", new { id = member.Id })" class="btn btn-sm btn-warning">編輯</a>
-                        <form method="post" action="@Url.Action("Delete", "Member", new { id = member.Id })" class="d-inline" onsubmit="return confirm('確認刪除這筆資料？');">
+                        <form method="post" action="@Url.Action("Delete", "Member", new { id = member.Id })" class="d-inline js-confirm" data-confirm="確認刪除這筆資料？">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-sm btn-danger">刪除</button>
                         </form>
@@ -53,3 +55,14 @@
         }
     </tbody>
 </table>
+
+@await Html.PartialAsync("_Pagination", new PaginationViewModel
+{
+    PageNumber = Model.Members.PageNumber,
+    PageSize = Model.Members.PageSize,
+    TotalPages = Model.Members.TotalPages,
+    TotalCount = Model.Members.TotalCount,
+    Action = "Index",
+    Controller = "Member",
+    RouteValues = new Dictionary<string, string?> { { "searchTerm", Model.SearchTerm } }
+})

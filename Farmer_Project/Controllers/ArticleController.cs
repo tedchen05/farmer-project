@@ -78,6 +78,7 @@ namespace Farmer_Project.Controllers
                 return View(model);
             }
 
+            this.Flash("新增成功");
             return RedirectToAction("Index");
         }
 
@@ -112,6 +113,7 @@ namespace Farmer_Project.Controllers
                 return View(model);
             }
 
+            this.Flash("修改成功");
             return RedirectToAction("Index");
         }
 
@@ -126,6 +128,7 @@ namespace Farmer_Project.Controllers
                 return NotFound("該文章不存在！");
             }
 
+            this.Flash("刪除成功");
             return RedirectToAction("Index");
         }
     }

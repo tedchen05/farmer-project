@@ -39,8 +39,4 @@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-    <script type="text/javascript">
-        var message = @Html.Raw(Json.Serialize(TempData["message"]));
-        if (message) { alert(message); }
-    </script>
 }

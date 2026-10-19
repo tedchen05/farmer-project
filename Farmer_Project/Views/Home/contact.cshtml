@@ -21,12 +21,6 @@
                 <div class="col-lg-4 offset-lg-2 col-md-5 offset-md-1">
                     <div class="contact_form-container">
                         <!-- °T®§®Ø -->
-                        @if (!string.IsNullOrEmpty(ViewBag.Message as string))
-                        {
-                            <div class="alert">
-                                @ViewBag.Message
-                            </div>
-                        }
                         <!-- ªí³æ -->
                         <form method="post" action="/Home/Contact">
                             @Html.AntiForgeryToken()

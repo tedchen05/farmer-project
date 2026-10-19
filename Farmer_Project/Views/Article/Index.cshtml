@@ -48,7 +48,7 @@
                                         <td style="vertical-align: middle;">@article.CreatedDate</td>
                                         <td class="d-flex" style="vertical-align: middle; align-items: center;">
                                             <a href="@Url.Action("FarmersArtEdit", "Article", new { id = article.ArticlesId })" class="btn btn-success me-2">編輯</a>
-                                            <form method="post" action="@Url.Action("FarmersArtDelete", "Article")" onsubmit="return confirm('確認刪除這筆資料？');">
+                                            <form method="post" action="@Url.Action("FarmersArtDelete", "Article")" class="js-confirm" data-confirm="確認刪除這筆資料？">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="DeleteArticlesId" value="@article.ArticlesId" />
                                                 <button type="submit" class="btn btn-danger">刪除</button>

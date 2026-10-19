@@ -1,0 +1,15 @@
+@* 讀取一次性 flash 訊息，用 SweetAlert2 跳出通知 *@
+@if (TempData["FlashMessage"] != null)
+{
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: @Html.Raw(Json.Serialize((TempData["FlashType"] as string) ?? "success")),
+            title: @Html.Raw(Json.Serialize(TempData["FlashMessage"])),
+            showConfirmButton: false,
+            timer: 2600,
+            timerProgressBar: true
+        });
+    </script>
+}

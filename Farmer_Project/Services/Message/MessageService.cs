@@ -23,16 +23,16 @@ namespace Farmer_Project.Services.Message
         {
             if (string.IsNullOrEmpty(message))
             {
-                return new MessageResult { Message = "請輸入有效的訊息內容！" };
+                return new MessageResult { Success = false, Message = "請輸入有效的訊息內容！" };
             }
 
             var members = await _memberRepository.GetAllAsync();
             if (members.Count == 0)
             {
-                return new MessageResult { Message = "沒有找到任何收件人地址！" };
+                return new MessageResult { Success = false, Message = "沒有找到任何收件人地址！" };
             }
 
-            var result = new MessageResult { Message = "信件發送成功！" };
+            var result = new MessageResult { Success = true, Message = "信件發送成功！" };
             foreach (var member in members)
             {
                 try
@@ -55,6 +55,7 @@ namespace Farmer_Project.Services.Message
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "寄送優惠信失敗, 收件者: {Account}", member.Account);
+                    result.Success = false;
                     result.Message = "信件發送失敗！錯誤信息：" + ex.Message;
                 }
             }

@@ -9,6 +9,7 @@
         <h2 class="text-center mb-4">後台管理系統-編輯會員資料</h2>
         <form method="post" action="@Url.Action("Update", "Member")">
             @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             <input type="hidden" name="id" value="@Model.Id" />
 
             <div class="mb-3">

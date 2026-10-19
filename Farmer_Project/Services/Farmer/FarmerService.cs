@@ -1,5 +1,6 @@
 using Farmer_Project.Entities;
 using Farmer_Project.Helpers;
+using Farmer_Project.Models.Common;
 using Farmer_Project.Models.Farmer;
 using Farmer_Project.Repositories.Article;
 using Farmer_Project.Repositories.Farmer;
@@ -39,20 +40,11 @@ namespace Farmer_Project.Services.Farmer
             };
         }
 
-        // 小農搜尋，空字串回傳全部
-        public async Task<FarmersAndMembersViewModel> SearchAsync(string search)
+        // 小農列表搜尋(分頁)，空字串回傳全部
+        public async Task<PagedList<FarmersInfo>> GetFarmerListAsync(string? search, int pageNumber, int pageSize)
         {
-            var viewModel = new FarmersAndMembersViewModel();
-
-            if (string.IsNullOrEmpty(search))
-            {
-                viewModel.FarmersInfos = await _farmerRepository.GetAllWithArticlesAsync();
-                return viewModel;
-            }
-
-            var transSearch = TransDictionary(search);
-            viewModel.FarmersInfos = await _farmerRepository.SearchAsync(search, transSearch);
-            return viewModel;
+            var transSearch = string.IsNullOrEmpty(search) ? null : TransDictionary(search);
+            return await _farmerRepository.SearchPagedAsync(search, transSearch, pageNumber, pageSize);
         }
 
         // 某作物類型的小農介紹文章

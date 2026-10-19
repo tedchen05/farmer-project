@@ -1,4 +1,5 @@
-﻿using Farmer_Project.Models.Contact;
+﻿using Farmer_Project.Common;
+using Farmer_Project.Models.Contact;
 using Farmer_Project.Services.Contact;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,6 @@ namespace Farmer_Project.Controllers
 
         public IActionResult Index()
         {
-            TempData.Clear();
             return View();
         }
 
@@ -51,7 +51,7 @@ namespace Farmer_Project.Controllers
             if (ModelState.IsValid)
             {
                 bool sent = _contactService.SendAcknowledgement(model);
-                ViewBag.Message = sent ? "您的訊息已成功發送！" : "發送郵件失敗，請稍後再試。";
+                this.Flash(sent ? "您的訊息已成功發送！" : "發送郵件失敗，請稍後再試。", sent ? "success" : "error");
             }
 
             return View();

@@ -60,6 +60,7 @@ namespace Farmer_Project.Controllers
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
+            this.Flash("登入成功");
             if (result.Role == MemberRole.Admin)
             {
                 return RedirectToAction("Index", "Member");
@@ -73,6 +74,7 @@ namespace Farmer_Project.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            this.Flash("已登出");
             return RedirectToAction("Index", "Home");
         }
 
@@ -81,6 +83,7 @@ namespace Farmer_Project.Controllers
         public async Task<IActionResult> Logout1()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            this.Flash("已登出");
             return RedirectToAction("Index", "Home");
         }
 
@@ -131,7 +134,7 @@ namespace Farmer_Project.Controllers
             var result = await _loginService.RegisterAsync(input);
             if (result.Success)
             {
-                TempData["message"] = result.Message;
+                this.Flash(result.Message);
                 return RedirectToAction("Login");
             }
 
@@ -153,7 +156,7 @@ namespace Farmer_Project.Controllers
             if (result.Success)
             {
                 HttpContext.Session.SetString(SessionKeys.ResetPwdUserId, input.Account);
-                TempData["message"] = result.Message;
+                this.Flash(result.Message, "info");
                 return RedirectToAction("NewPasswd");
             }
 
@@ -175,7 +178,7 @@ namespace Farmer_Project.Controllers
             var result = await _loginService.ChangePasswordAsync(account, input.Passwd, input.Passwd2);
             if (result.Success)
             {
-                TempData["message"] = result.Message;
+                this.Flash(result.Message);
                 return RedirectToAction("Login");
             }
 
@@ -200,7 +203,7 @@ namespace Farmer_Project.Controllers
             }
 
             var result = await _loginService.ReviseAccountAsync(account, input.NickName, input.Passwd);
-            TempData["message"] = result.Message;
+            this.Flash(result.Message);
             return RedirectToAction("Index", "Home");
         }
 

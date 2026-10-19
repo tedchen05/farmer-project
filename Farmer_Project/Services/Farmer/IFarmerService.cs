@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Farmer_Project.Models.Common;
 using Farmer_Project.Models.Farmer;
 
 namespace Farmer_Project.Services.Farmer
@@ -7,7 +8,7 @@ namespace Farmer_Project.Services.Farmer
     public interface IFarmerService
     {
         Task<FarmersAndMembersViewModel> GetDashboardAsync();
-        Task<FarmersAndMembersViewModel> SearchAsync(string search);
+        Task<PagedList<FarmersInfo>> GetFarmerListAsync(string? search, int pageNumber, int pageSize);
         Task<List<FarmersArticles>> GetFarmerIntrosAsync(string cropsType);
         Task<FarmersArticles?> GetFarmerStoryAsync(int farmersId, int articlesId);
         Task<FarmersInfo?> GetByIdAsync(int id);

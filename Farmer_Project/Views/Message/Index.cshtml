@@ -4,10 +4,6 @@
 }
 
 <h3>發送訊息</h3>
-@if (TempData["LabelResult"] != null)
-{
-    <div class="alert alert-info">@TempData["LabelResult"]</div>
-}
 
 <form method="post" action="@Url.Action("SendEmail", "Message")">
     @Html.AntiForgeryToken()

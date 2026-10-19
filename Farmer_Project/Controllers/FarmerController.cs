@@ -1,4 +1,7 @@
+using Farmer_Project.Common;
 using Farmer_Project.Entities;
+using Farmer_Project.Models.Common;
+using Farmer_Project.Models.Farmer;
 using Microsoft.AspNetCore.Authorization;
 using Farmer_Project.Services.Farmer;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +25,14 @@ namespace Farmer_Project.Controllers
 
             if (string.IsNullOrWhiteSpace(CropsType))
             {
-                ViewBag.Message = "請輸入有效的作物類型！";
+                this.Flash("請輸入有效的作物類型！", "info");
                 return View(new List<FarmersArticles>());
             }
 
             var farmers = await _farmerService.GetFarmerIntrosAsync(CropsType);
             if (!farmers.Any())
             {
-                ViewBag.Message = "沒有找到符合條件的文章！";
+                this.Flash("沒有找到符合條件的文章！", "info");
             }
 
             return View(farmers);
@@ -50,22 +53,21 @@ namespace Farmer_Project.Controllers
             return View(article);
         }
 
-        // 後台小農列表
+        // 後台小農列表與搜尋(分頁)
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm, int page = 1, int pageSize = 10)
         {
-            var viewModel = await _farmerService.GetDashboardAsync();
-            return View(viewModel);
-        }
+            pageSize = PagedList<FarmersInfo>.NormalizePageSize(pageSize);
+            var farmers = await _farmerService.GetFarmerListAsync(searchTerm, page, pageSize);
 
-        // 小農搜尋
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> FarmersInfoSearch(string Search)
-        {
-            var viewModel = await _farmerService.SearchAsync(Search);
-            return View("Index", viewModel);
+            var viewModel = new FarmerListViewModel
+            {
+                Farmers = farmers,
+                SearchTerm = searchTerm
+            };
+
+            return View(viewModel);
         }
 
         // 新增小農
@@ -88,8 +90,14 @@ namespace Farmer_Project.Controllers
                 return View(farmersInfo);
             }
 
-            ViewBag.Message = result.Message;
-            return result.Success ? View(new FarmersInfo()) : View(farmersInfo);
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View(farmersInfo);
+            }
+
+            this.Flash("新增成功");
+            return RedirectToAction("Index");
         }
 
         // 修改小農
@@ -123,7 +131,7 @@ namespace Farmer_Project.Controllers
                 return View(model);
             }
 
-            TempData["SuccessMessage"] = "小農資料修改成功！";
+            this.Flash("修改成功");
             return RedirectToAction("Index");
         }
 
@@ -138,7 +146,7 @@ namespace Farmer_Project.Controllers
                 return NotFound("找不到對應的農場資料");
             }
 
-            TempData["SuccessMessage"] = "小農資料刪除成功！";
+            this.Flash("刪除成功");
             return RedirectToAction("Index");
         }
     }

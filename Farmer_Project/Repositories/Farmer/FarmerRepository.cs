@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Farmer_Project.Models.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Farmer_Project.Repositories.Farmer
@@ -20,17 +21,35 @@ namespace Farmer_Project.Repositories.Farmer
                 .ToListAsync();
         }
 
-        // 依關鍵字搜尋小農
-        public async Task<List<FarmersInfo>> SearchAsync(string search, string transSearch)
+        // 依關鍵字搜尋小農並分頁，空字串回傳全部
+        public async Task<PagedList<FarmersInfo>> SearchPagedAsync(string? search, string? transSearch, int pageNumber, int pageSize)
         {
-            return await _dbContext.FarmersInfo
-                .Where(f => f.Name.Contains(search) ||
-                            f.FarmName.Contains(search) ||
-                            f.CropsType.Contains(transSearch) ||
-                            f.Address.Contains(search) ||
-                            f.Phone.Contains(search))
-                .Include(f => f.FarmersArticles)
+            var query = _dbContext.FarmersInfo.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                var trans = transSearch ?? search;
+                query = query.Where(f => f.Name.Contains(search) ||
+                                         f.FarmName.Contains(search) ||
+                                         f.CropsType.Contains(trans) ||
+                                         f.Address.Contains(search) ||
+                                         f.Phone.Contains(search));
+            }
+
+            var totalCount = await query.CountAsync();
+            var items = await query
+                .OrderBy(f => f.FarmersId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return new PagedList<FarmersInfo>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
 
         // 依Id取得小農

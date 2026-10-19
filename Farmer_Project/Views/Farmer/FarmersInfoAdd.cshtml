@@ -9,12 +9,7 @@
     <div class="card shadow" style="width: 100%; max-width: 650px; padding: 20px;">
         <form id="farmersForm" action="/Farmer/FarmersInfoAdd" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
-            @if (ViewBag.Message != null)
-            {
-                <div class="alert @(ViewBag.Message.Contains("錯誤") ? "alert-danger" : "alert-info")" role="alert">
-                    @ViewBag.Message
-                </div>
-            }
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
             <div class="bg_color py-2 rounded mb-4">
                 <h4 class="text-center mb-0">新增小農資料</h4>

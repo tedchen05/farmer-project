@@ -133,19 +133,26 @@
         });
 
         document.getElementById('removeParagraphs').addEventListener('click', function () {
-               const userConfirmed = confirm("減少段落可能會遺失您現有段落內容，確定要減少段落嗎？");
+            if (paragraphsCount <= 0) {
+                Swal.fire({ icon: 'info', title: '已經最後一段無法刪除' });
+                return;
+            }
 
-                if (userConfirmed) {
-                    if (paragraphsCount > 0) {
-
-                        const lastParagraphs = document.getElementById('subParagraphs_' + paragraphsCount);
-                    lastParagraphs.remove();
+            Swal.fire({
+                title: '減少段落可能會遺失您現有段落內容，確定要減少段落嗎？',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    const lastParagraphs = document.getElementById('subParagraphs_' + paragraphsCount);
+                    if (lastParagraphs) {
+                        lastParagraphs.remove();
+                    }
                     paragraphsCount--;
                 }
-            else {
-                    alert("已經最後一段無法刪除");
-        }
-        }
+            });
         });
 </script>
 }

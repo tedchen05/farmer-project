@@ -1,4 +1,5 @@
 using Farmer_Project.Entities;
+using Farmer_Project.Models.Common;
 
 namespace Farmer_Project.Repositories.Farmer
 {
@@ -6,7 +7,7 @@ namespace Farmer_Project.Repositories.Farmer
     public interface IFarmerRepository
     {
         Task<List<FarmersInfo>> GetAllWithArticlesAsync();
-        Task<List<FarmersInfo>> SearchAsync(string search, string transSearch);
+        Task<PagedList<FarmersInfo>> SearchPagedAsync(string? search, string? transSearch, int pageNumber, int pageSize);
         Task<FarmersInfo?> GetByIdAsync(int id);
         void Add(FarmersInfo farmer);
         void Remove(FarmersInfo farmer);
